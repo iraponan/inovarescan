@@ -1,16 +1,21 @@
-# inovarescan
+<div style="text-align: center;">
+    <img src="\assets\images\logo-inovare-ti.png" alt="InovareScan Logo" width="300px"/>
+</div>
+<div style="text-align: center;">
+    <img src="\assets\icon\icon.png" alt="InovareScan Logo" width="300px"/>
+</div>
 
-Projeto leitor de codigo de barras para inserir produtos no sistema ERP Cronos.
+# InovareScan – A Integração Perfeita com o Sistema Cronos
 
-## Getting Started
+O **InovareScan**, desenvolvido pela Inovare TI, é a ferramenta ideal para leitura de códigos de barras e integração direta com o sistema de gestão **Cronos**. Com ele, você pode escanear rapidamente os produtos, e eles serão automaticamente inseridos no sistema Cronos, agilizando o processo de gestão e controle de estoque.
 
-This project is a starting point for a Flutter application.
+## Principais funcionalidades:
 
-A few resources to get you started if this is your first Flutter project:
+- **Integração direta com o sistema Cronos**, permitindo que os produtos bipados sejam automaticamente registrados.
+- **Leitura rápida e precisa** de diferentes tipos de códigos (EAN, QR Code, Data Matrix, etc.).
+- **Interface simples e intuitiva**, projetada para otimizar o tempo dos usuários.
+- **Histórico de leitura de produtos**, facilitando o controle e consulta posterior.
+- **Sincronização em tempo real** com o Cronos, garantindo uma gestão eficiente e sem erros.
+- **Compatível com múltiplos dispositivos**, oferecendo flexibilidade para sua operação.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Transforme sua gestão de produtos e estoques com o **InovareScan**, a ferramenta que conecta tecnologia e eficiência com o sistema Cronos. Baixe agora e experimente!
