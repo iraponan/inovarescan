@@ -44,6 +44,8 @@ dependencies:
   freezed_annotation: ^2.4.4
   flutter_secure_storage: ^9.2.2
   dart_sql_builder: ^1.0.1-dev
+  simple_connection_checker: ^0.2.1
+  animated_text_kit: ^4.2.2
 
 dev_dependencies:
   flutter_test:
@@ -54,7 +56,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.14.1
   build_runner: ^2.4.12
 
@@ -102,7 +104,9 @@ flutter:
   assets:
     - lib/src/config/.env
     - assets/icon/icon.png
-    - assets/images/logo-inovare-ti.png
+    - assets/images/Logo-Inovare-TI.png
+    - assets/images/Logo-Fundo-Transparente.png
+    - assets/images/Logo-Inovare-TI-Branca.png
 
 flutter_launcher_icons:
   android: "launcher_icon"

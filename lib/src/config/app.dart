@@ -13,8 +13,9 @@ class AppInovareScan extends StatelessWidget {
       title: 'InovareScan',
       debugShowCheckedModeBanner: false,
       theme: ThemeProject.theme,
-      initialRoute: PageRoutes.baseRoute,
+      initialRoute: PageRoutes.initRoute,
       getPages: AppPages.pages,
+      enableLog: false,
     );
   }
 }
