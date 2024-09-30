@@ -9,7 +9,6 @@ Future<void> main() async {
   await AppInitialize.initializeParseServer();
 
   AppSetup.setupApp();
-  AppSetup.setupControllers();
 
   runApp(const AppInovareScan());
 }

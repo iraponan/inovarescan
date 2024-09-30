@@ -42,3 +42,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /lib/src/config/.env
+/lib/src/services/functions_for_cronos.dart
+/lib/src/helpers/mssql/querys.dart

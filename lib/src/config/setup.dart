@@ -8,6 +8,4 @@ mixin AppSetup {
       ],
     );
   }
-
-  static void setupControllers() {}
 }

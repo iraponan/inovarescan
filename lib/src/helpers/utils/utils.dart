@@ -12,7 +12,7 @@ mixin Utils {
       backgroundColor: isError
           ? Colors.redAccent
           : isInfo
-              ? Colors.white
+              ? Colors.yellowAccent
               : CustomColors.customSwathColor,
       textColor: isInfo ? Colors.black : Colors.white,
       fontSize: 14.0,

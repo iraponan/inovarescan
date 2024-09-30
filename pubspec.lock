@@ -54,14 +54,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  benchmark_harness:
-    dependency: transitive
-    description:
-      name: benchmark_harness
-      sha256: a12bc021ec45c05f60ad65a6cec1be881d4d84842699b2c4f4aa59f1089de242
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -78,14 +70,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.15.0"
-  buffer:
-    dependency: transitive
-    description:
-      name: buffer
-      sha256: "389da2ec2c16283c8787e0adaede82b1842102f8c8aae2f49003a766c5c6b3d1"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.3"
   build:
     dependency: transitive
     description:
@@ -158,14 +142,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
-  charcode:
-    dependency: transitive
-    description:
-      name: charcode
-      sha256: fb98c0f6d12c920a02ee2d998da788bca066ca5f148492b7085ee23372b12306
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.3.1"
   checked_yaml:
     dependency: transitive
     description:
@@ -254,14 +230,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
-  dart_sql_builder:
-    dependency: "direct main"
-    description:
-      name: dart_sql_builder
-      sha256: "667ee64f8f782fe1f52807d6933ed63a5770fa6fc42ab890807a94b5dbd039eb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1-dev"
   dart_style:
     dependency: transitive
     description:
@@ -621,6 +589,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  mssql_connection:
+    dependency: "direct main"
+    description:
+      name: mssql_connection
+      sha256: af148c2e501a34bfcd96064fe16386e52d59ea765270f41ad10c1673cdaadf7e
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.3"
   nm:
     dependency: transitive
     description:
@@ -757,14 +733,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
-  postgres:
-    dependency: transitive
-    description:
-      name: postgres
-      sha256: f8e4f14734d096277f77ed5dddefcbc1ce18f8f7db5b7ff4b5dd6df2d9db2730
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.6.4"
   pub_semver:
     dependency: transitive
     description:
@@ -781,22 +749,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
-  sasl_scram:
-    dependency: transitive
-    description:
-      name: sasl_scram
-      sha256: a47207a436eb650f8fdcf54a2e2587b850dc3caef9973ce01f332b07a6fc9cb9
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.1"
-  saslprep:
-    dependency: transitive
-    description:
-      name: saslprep
-      sha256: "3d421d10be9513bf4459c17c5e70e7b8bc718c9fc5ad4ba5eb4f5fd27396f740"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.3"
   sembast:
     dependency: transitive
     description:
@@ -1002,14 +954,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.2"
-  unorm_dart:
-    dependency: transitive
-    description:
-      name: unorm_dart
-      sha256: "23d8bf65605401a6a32cff99435fed66ef3dab3ddcad3454059165df46496a3b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.0"
   uuid:
     dependency: transitive
     description:

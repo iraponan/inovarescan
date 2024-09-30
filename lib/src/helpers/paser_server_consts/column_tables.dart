@@ -4,6 +4,7 @@ mixin UserColumnNamesParseServer {
   static const String fullName = 'nomeCompleto';
   static const String password = 'password';
   static const String email = 'email';
+  static const String cpf = 'CPF';
   static const String phone = 'telefone';
   static const String company = 'empresa';
   static const String active = 'ativo';
@@ -22,8 +23,12 @@ mixin UserColumnNamesParseServer {
 mixin CompanyColumnNamesParseServer {
   static const String id = 'objectId';
   static const String name = 'nome';
-  static const String cgc = 'CGC';
+  static const String cnpj = 'CGC';
   static const String server = 'servidor';
+  static const String port = 'porta';
+  static const String dataBase = 'bancoDeDados';
+  static const String username = 'usuario';
+  static const String password = 'senha';
   static const String active = 'ativa';
   static const String updateAt = 'updateAt';
   static const String createAt = 'createAt';

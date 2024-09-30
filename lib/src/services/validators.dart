@@ -13,8 +13,8 @@ mixin Validators {
   static String? passwordValidator(String? password) {
     if (password == null || password.isEmpty) {
       return 'Digite sua senha!';
-    } else if (password.length < 7) {
-      return 'Digite uma senha com pelo menos 7 caracteres!';
+    } else if (password.length < 3) {
+      return 'Digite uma senha com pelo menos 3 caracteres!';
     }
     return null;
   }
@@ -30,6 +30,16 @@ mixin Validators {
     return null;
   }
 
+  static String? usernameValidator(String? name) {
+    if (name == null || name.isEmpty) {
+      return 'Digite um nome de usuário!';
+    }
+    if (name.length == 1) {
+      return 'Digite seu nome de usuário completo!';
+    }
+    return null;
+  }
+
   static String? phoneValidator(String? phone) {
     if (phone == null || phone.isEmpty) {
       return 'Digite um número de celular!';
@@ -40,12 +50,22 @@ mixin Validators {
     return null;
   }
 
-  static String? cpfCnpjValidator(String? cpfCnpj) {
-    if (cpfCnpj == null || cpfCnpj.isEmpty) {
+  static String? cpfValidator(String? cpf) {
+    if (cpf == null || cpf.isEmpty) {
       return 'Digite um CPF!';
     }
-    if (!cpfCnpj.isCpf) {
+    if (!cpf.isCpf) {
       return 'Digite um CPF válido!';
+    }
+    return null;
+  }
+
+  static String? cnpjValidator(String? cnpj) {
+    if (cnpj == null || cnpj.isEmpty) {
+      return 'Digite um CNPJ!';
+    }
+    if (!cnpj.isCnpj) {
+      return 'Digite um CNPJ válido!';
     }
     return null;
   }

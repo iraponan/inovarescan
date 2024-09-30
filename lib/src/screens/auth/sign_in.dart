@@ -4,11 +4,15 @@ import 'package:get/get.dart';
 import 'package:inovarescan/src/config/custom_colors.dart';
 import 'package:inovarescan/src/config/page_routes.dart';
 import 'package:inovarescan/src/controllers/auth.dart';
+import 'package:inovarescan/src/controllers/company.dart';
 import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/helpers/utils/utils.dart';
 import 'package:inovarescan/src/screens/auth/components/forgot_password_dialog.dart';
+import 'package:inovarescan/src/screens/auth/components/validate_company_dialog.dart';
+import 'package:inovarescan/src/screens/auth/components/validate_user_dialog.dart';
 import 'package:inovarescan/src/screens/common_widgets/app_name.dart';
 import 'package:inovarescan/src/screens/common_widgets/custom_text_field.dart';
+import 'package:inovarescan/src/services/sql_server_connection.dart';
 import 'package:inovarescan/src/services/validators.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -20,7 +24,7 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final formKey = GlobalKey<FormState>();
-  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
@@ -80,7 +84,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     children: [
                       // # E-mail #
                       CustomTextField(
-                        controller: emailController,
+                        controller: usernameController,
                         labelText: 'E-mail',
                         prefixIcon: Icons.email,
                         textInputType: TextInputType.emailAddress,
@@ -93,6 +97,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         prefixIcon: Icons.lock,
                         isSecret: true,
                         validator: Validators.passwordValidator,
+                        enableSuggestions: false,
                       ),
                       // # Botão de Entrar #
                       SizedBox(
@@ -105,7 +110,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   : () {
                                       FocusScope.of(context).unfocus();
                                       if (formKey.currentState!.validate()) {
-                                        String email = emailController.text;
+                                        String email = usernameController.text;
                                         String password = passwordController.text;
                                         authController.signIn(email: email, password: password);
                                       }
@@ -130,7 +135,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             final bool? result = await showDialog(
                               context: context,
                               builder: (context) => ForgotPasswordDialog(
-                                email: emailController.text,
+                                email: usernameController.text,
                               ),
                             );
                             if (result ?? false) {
@@ -172,16 +177,46 @@ class _SignInScreenState extends State<SignInScreen> {
                       // # Criar Conta #
                       SizedBox(
                         height: 50,
-                        child: OutlinedButton(
-                          onPressed: () => Get.toNamed(PageRoutes.signUpRoute),
-                          child: Text(
-                            'Criar Conta',
-                            style: TextStyle(
-                              color: CustomColors.customContrastColor2,
-                              fontSize: 18,
+                        child: GetBuilder<CompanyController>(builder: (controller) {
+                          return OutlinedButton(
+                            onPressed: () async {
+                              final bool? result = await showDialog(
+                                context: context,
+                                builder: (context) => ValidateCompanyDialog(),
+                              );
+                              if (result ?? false) {
+                                SqlServerConnection sqlConnection = Get.find<SqlServerConnection>();
+                                await sqlConnection.tryConnected(controller.company);
+                                if (sqlConnection.isConnected) {
+                                  if (context.mounted) {
+                                    final bool? result = await showDialog(
+                                      context: context,
+                                      builder: (context) => ValidateUserDialog(),
+                                    );
+                                    if (result ?? false) {
+                                      Get.toNamed(PageRoutes.signUpRoute);
+                                    } else {
+                                      Utils.showToast(message: 'Faça login ou crie uma nova conta.', isInfo: true);
+                                    }
+                                  } else {
+                                    Utils.showToast(message: 'Ocorreu um erro na aplicação! Por favor tente novamente...', isError: true);
+                                  }
+                                } else {
+                                  Utils.showToast(message: 'Não foi possível conectar a base de dados da empresa ${controller.company.name}.', isError: true);
+                                }
+                              } else {
+                                Utils.showToast(message: 'Faça login ou crie uma nova conta.', isInfo: true);
+                              }
+                            },
+                            child: Text(
+                              'Criar Conta',
+                              style: TextStyle(
+                                color: CustomColors.customContrastColor2,
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        }),
                       ),
                     ],
                   ),

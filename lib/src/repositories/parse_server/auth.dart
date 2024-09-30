@@ -20,7 +20,7 @@ class AuthRepository {
   }
 
   Future<AuthResult> signUp({required User user}) async {
-    final ParseUser parseUser = ParseUser(user.username, user.password, user.email);
+    final ParseUser parseUser = ParseUser(user.email, user.password, user.email);
 
     parseUser.set<String?>(UserColumnNamesParseServer.fullName, user.fullName);
     parseUser.set<String?>(UserColumnNamesParseServer.phone, user.phone);

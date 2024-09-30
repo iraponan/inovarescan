@@ -5,10 +5,10 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 class User {
   String? id;
   String? token;
-  String? username;
   String? fullName;
   String? password;
   String? email;
+  String? cpf;
   String? phone;
   Company? company;
   bool? active;
@@ -26,10 +26,10 @@ class User {
   User({
     this.id,
     this.token,
-    this.username,
     this.fullName,
     this.password,
     this.email,
+    this.cpf,
     this.phone,
     this.company,
     this.active,
@@ -49,9 +49,9 @@ class User {
     return User(
       id: parseUser.objectId,
       token: parseUser.sessionToken,
-      username: parseUser.username,
       fullName: parseUser.get<String>(UserColumnNamesParseServer.fullName),
       email: parseUser.emailAddress,
+      cpf: parseUser.get<String>(UserColumnNamesParseServer.cpf),
       phone: parseUser.get<String>(UserColumnNamesParseServer.phone),
       company: Company.fromParserObject(parseUser.get(UserColumnNamesParseServer.company)),
       active: parseUser.get<bool>(UserColumnNamesParseServer.active),
@@ -70,7 +70,7 @@ class User {
 
   @override
   String toString() {
-    return 'User{id: $id, username: $username, fullName: $fullName, email: $email, phone: $phone, company: $company, active: $active, updateAt: $updateAt, createAt: $createAt,'
+    return 'User{id: $id, fullName: $fullName, email: $email, phone: $phone, company: $company, active: $active, updateAt: $updateAt, createAt: $createAt,'
         ' emailVerified: $emailVerified, address: $address, number: $number, neighbourhood: $neighbourhood, complement: $complement, city: $city, state: $state, postCode: $postCode}';
   }
 }

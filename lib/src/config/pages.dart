@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:inovarescan/src/bindings/auth.dart';
-import 'package:inovarescan/src/bindings/connection.dart';
+import 'package:inovarescan/src/bindings/company.dart';
+import 'package:inovarescan/src/bindings/internet_connection.dart';
+import 'package:inovarescan/src/bindings/sql_server_connection.dart';
+import 'package:inovarescan/src/bindings/user_cronos.dart';
 import 'package:inovarescan/src/config/page_routes.dart';
 import 'package:inovarescan/src/screens/auth/sign_in.dart';
 import 'package:inovarescan/src/screens/auth/sign_up.dart';
@@ -14,7 +17,7 @@ mixin AppPages {
       name: PageRoutes.initRoute,
       page: () => const InitScreen(),
       bindings: [
-        ConnectionBinding(),
+        InternetConnectionBinding(),
         AuthBinding(),
       ],
     ),
@@ -25,10 +28,20 @@ mixin AppPages {
     GetPage(
       name: PageRoutes.signInRoute,
       page: () => const SignInScreen(),
+      bindings: [
+        CompanyBinding(),
+        SqlServerConnectionBinding(),
+        UserCronosBinding(),
+      ],
     ),
     GetPage(
       name: PageRoutes.signUpRoute,
       page: () => const SignUpScreen(),
+      bindings: [
+        CompanyBinding(),
+        AuthBinding(),
+        SqlServerConnectionBinding(),
+      ],
     ),
     GetPage(
       name: PageRoutes.baseRoute,

@@ -4,15 +4,16 @@ import 'package:inovarescan/src/config/page_routes.dart';
 import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/helpers/utils/utils.dart';
 import 'package:inovarescan/src/models/user.dart';
-import 'package:inovarescan/src/repositories/auth.dart';
+import 'package:inovarescan/src/repositories/parse_server/auth.dart';
 import 'package:inovarescan/src/results/auth.dart';
 import 'package:inovarescan/src/results/reset_password.dart';
 import 'package:inovarescan/src/services/storage_files.dart';
 
 class AuthController extends GetxController {
   RxBool isLoading = false.obs;
+  RxBool isUserValid = false.obs;
 
-  final authRepository = AuthRepository();
+  final _authRepository = AuthRepository();
 
   User user = User();
 
@@ -22,7 +23,7 @@ class AuthController extends GetxController {
       Get.offAllNamed(PageRoutes.signInRoute);
       return;
     } else {
-      AuthResult result = await authRepository.currentUser(token: token);
+      AuthResult result = await _authRepository.currentUser(token: token);
       result.when(
         success: (user) {
           this.user = user;
@@ -38,7 +39,7 @@ class AuthController extends GetxController {
   Future<void> signIn({required String email, required String password}) async {
     FocusManager.instance.primaryFocus?.unfocus();
     isLoading.value = true;
-    AuthResult result = await authRepository.signIn(email: email, password: password);
+    AuthResult result = await _authRepository.signIn(email: email, password: password);
     isLoading.value = false;
 
     result.when(
@@ -61,7 +62,7 @@ class AuthController extends GetxController {
   Future<void> signUp() async {
     FocusManager.instance.primaryFocus?.unfocus();
     isLoading.value = true;
-    AuthResult result = await authRepository.signUp(user: user);
+    AuthResult result = await _authRepository.signUp(user: user);
     isLoading.value = false;
     result.when(
       success: (user) {
@@ -75,7 +76,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> resetPassword(String email) async {
-    ResetPasswordResult result = await authRepository.resetPassword(email);
+    ResetPasswordResult result = await _authRepository.resetPassword(email);
     FocusManager.instance.primaryFocus?.unfocus();
     result.when(
       success: (message) {
@@ -93,7 +94,7 @@ class AuthController extends GetxController {
   }) async {
     isLoading.value = true;
 
-    final result = await authRepository.changePassword(
+    final result = await _authRepository.changePassword(
       email: user.email ?? '',
       currentPassword: currentPassword,
       newPassword: newPassword,

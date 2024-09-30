@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inovarescan/src/config/custom_colors.dart';
-import 'package:inovarescan/src/controllers/connection.dart';
+import 'package:inovarescan/src/controllers/internet_connection.dart';
 import 'package:inovarescan/src/screens/common_widgets/app_name.dart';
 
 class InitScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class _InitScreenState extends State<InitScreen> {
   @override
   void initState() {
     super.initState();
-    Get.find<ConnectionController>().validateConnection();
+    Get.find<InternetConnectionController>().validateConnection();
   }
 
   @override
