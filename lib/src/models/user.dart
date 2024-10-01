@@ -8,6 +8,7 @@ class User {
   String? fullName;
   String? password;
   String? email;
+  String? userCronos;
   String? cpf;
   String? phone;
   Company? company;
@@ -29,6 +30,7 @@ class User {
     this.fullName,
     this.password,
     this.email,
+    this.userCronos,
     this.cpf,
     this.phone,
     this.company,
@@ -51,6 +53,7 @@ class User {
       token: parseUser.sessionToken,
       fullName: parseUser.get<String>(UserColumnNamesParseServer.fullName),
       email: parseUser.emailAddress,
+      userCronos: parseUser.get<String>(UserColumnNamesParseServer.userCronos),
       cpf: parseUser.get<String>(UserColumnNamesParseServer.cpf),
       phone: parseUser.get<String>(UserColumnNamesParseServer.phone),
       company: Company.fromParserObject(parseUser.get(UserColumnNamesParseServer.company)),
@@ -70,7 +73,8 @@ class User {
 
   @override
   String toString() {
-    return 'User{id: $id, fullName: $fullName, email: $email, phone: $phone, company: $company, active: $active, updateAt: $updateAt, createAt: $createAt,'
-        ' emailVerified: $emailVerified, address: $address, number: $number, neighbourhood: $neighbourhood, complement: $complement, city: $city, state: $state, postCode: $postCode}';
+    return 'User{id: $id, token: $token, fullName: $fullName, password: $password, email: $email, userCronos: $userCronos, cpf: $cpf, phone: $phone, company: $company,'
+        ' active: $active, updateAt: $updateAt, createAt: $createAt, emailVerified: $emailVerified, address: $address, number: $number, neighbourhood: $neighbourhood,'
+        ' complement: $complement, city: $city, state: $state, postCode: $postCode}';
   }
 }

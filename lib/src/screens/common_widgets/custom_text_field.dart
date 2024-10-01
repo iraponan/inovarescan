@@ -15,6 +15,7 @@ class CustomTextField extends StatefulWidget {
     this.textCapitalization = TextCapitalization.none,
     this.validator,
     this.onSaved,
+    this.onChanged,
     this.formFieldKey,
     this.enableSuggestions = true,
   });
@@ -30,6 +31,7 @@ class CustomTextField extends StatefulWidget {
   final String? initialValue;
   final String? Function(String?)? validator;
   final void Function(String?)? onSaved;
+  final void Function(String?)? onChanged;
   final GlobalKey<FormFieldState>? formFieldKey;
   final bool enableSuggestions;
 
@@ -58,6 +60,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         obscureText: isObscure,
         validator: widget.validator,
         onSaved: widget.onSaved,
+        onChanged: widget.onChanged,
         enableSuggestions: widget.enableSuggestions,
         decoration: InputDecoration(
           prefixIcon: Icon(widget.prefixIcon),

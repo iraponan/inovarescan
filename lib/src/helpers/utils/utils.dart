@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inovarescan/src/config/custom_colors.dart';
@@ -17,5 +19,9 @@ mixin Utils {
       textColor: isInfo ? Colors.black : Colors.white,
       fontSize: 14.0,
     );
+  }
+
+  static int numRandom(int min, int max) {
+    return min + Random().nextInt(max - min);
   }
 }

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inovarescan/src/controllers/auth.dart';
+import 'package:inovarescan/src/helpers/utils/utils.dart';
 import 'package:inovarescan/src/screens/common_widgets/custom_text_field.dart';
-import 'package:inovarescan/src/services/validators.dart';
 
-class ForgotPasswordDialog extends StatelessWidget {
-  ForgotPasswordDialog({super.key, required String email}) {
-    emailController.text = email;
-  }
+class ValidateEmailDialog extends StatefulWidget {
+  const ValidateEmailDialog({super.key, required this.codeValid});
 
-  final emailController = TextEditingController();
-  final authController = Get.find<AuthController>();
+  final String codeValid;
 
+  @override
+  State<ValidateEmailDialog> createState() => _ValidateEmailDialogState();
+}
+
+class _ValidateEmailDialogState extends State<ValidateEmailDialog> {
+  final codeController = TextEditingController();
   final _formFieldKey = GlobalKey<FormFieldState>();
 
   @override
@@ -27,9 +29,9 @@ class ForgotPasswordDialog extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   child: Text(
-                    'Recuperação de Senha',
+                    'Foi enviado um código de verificação para seu e-mail.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -40,27 +42,32 @@ class ForgotPasswordDialog extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.only(top: 10, bottom: 20),
                   child: Text(
-                    'Digite seu email para recuperar sua senha.',
+                    'Digite o código no campo abaixo.',
                     textAlign: TextAlign.center,
                     style: TextStyle(),
                   ),
                 ),
                 CustomTextField(
                   formFieldKey: _formFieldKey,
-                  controller: emailController,
-                  labelText: 'E-mail',
-                  prefixIcon: Icons.email,
-                  validator: Validators.emailValidator,
+                  controller: codeController,
+                  labelText: 'Código',
+                  prefixIcon: Icons.perm_identity,
+                  textInputType: TextInputType.number,
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formFieldKey.currentState!.validate()) {
-                      authController.resetPassword(emailController.text);
-                      Get.back(result: true);
+                      FocusScope.of(context).unfocus();
+                      if (codeController.text == widget.codeValid) {
+                        Get.back(result: true);
+                      } else {
+                        Utils.showToast(message: 'O código informado não é valido.', isError: true);
+                        Utils.showToast(message: 'Por favor informe o código valido enviado para seu e-mail.');
+                      }
                     }
                   },
                   child: const Text(
-                    'Recuperar',
+                    'Verificar',
                     style: TextStyle(fontSize: 13),
                   ),
                 ),

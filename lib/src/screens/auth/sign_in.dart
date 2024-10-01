@@ -189,12 +189,17 @@ class _SignInScreenState extends State<SignInScreen> {
                                 await sqlConnection.tryConnected(controller.company);
                                 if (sqlConnection.isConnected) {
                                   if (context.mounted) {
-                                    final bool? result = await showDialog(
+                                    final String? result = await showDialog(
                                       context: context,
                                       builder: (context) => ValidateUserDialog(),
                                     );
-                                    if (result ?? false) {
-                                      Get.toNamed(PageRoutes.signUpRoute);
+                                    if (result != null && result.isNotEmpty) {
+                                      Get.toNamed(
+                                        PageRoutes.signUpRoute,
+                                        parameters: <String, String>{
+                                          'userCronos': result,
+                                        },
+                                      );
                                     } else {
                                       Utils.showToast(message: 'Faça login ou crie uma nova conta.', isInfo: true);
                                     }

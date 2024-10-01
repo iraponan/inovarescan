@@ -4,6 +4,7 @@ mixin UserColumnNamesParseServer {
   static const String fullName = 'nomeCompleto';
   static const String password = 'password';
   static const String email = 'email';
+  static const String userCronos = 'userCronos';
   static const String cpf = 'CPF';
   static const String phone = 'telefone';
   static const String company = 'empresa';

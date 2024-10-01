@@ -76,7 +76,7 @@ class _ValidateCompanyDialogState extends State<ValidateUserDialog> {
                       if (_formKey.currentState!.validate()) {
                         FocusScope.of(context).unfocus();
                         if (await controller.validateUser(usernameController.text, passwordController.text)) {
-                          Get.back(result: true);
+                          Get.back(result: usernameController.text);
                         } else {
                           Utils.showToast(message: 'O usuário e senha informado esta errado ou não pertence a empresa informada.', isError: true);
                         }

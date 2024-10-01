@@ -1,6 +1,6 @@
 import 'package:inovarescan/src/helpers/paser_server_consts/column_tables.dart';
+import 'package:inovarescan/src/helpers/paser_server_consts/tables.dart';
 import 'package:inovarescan/src/helpers/utils/parse_erros.dart';
-import 'package:inovarescan/src/models/company.dart';
 import 'package:inovarescan/src/models/user.dart';
 import 'package:inovarescan/src/results/auth.dart';
 import 'package:inovarescan/src/results/reset_password.dart';
@@ -22,12 +22,18 @@ class AuthRepository {
   Future<AuthResult> signUp({required User user}) async {
     final ParseUser parseUser = ParseUser(user.email, user.password, user.email);
 
+    parseUser.set<ParseObject>(
+      UserColumnNamesParseServer.company,
+      ParseObject(TablesNamesParseServer.company)
+        ..set(
+          CompanyColumnNamesParseServer.id,
+          user.company?.id,
+        ),
+    );
+    parseUser.set<String?>(UserColumnNamesParseServer.userCronos, user.userCronos);
     parseUser.set<String?>(UserColumnNamesParseServer.fullName, user.fullName);
+    parseUser.set<String?>(UserColumnNamesParseServer.cpf, user.cpf);
     parseUser.set<String?>(UserColumnNamesParseServer.phone, user.phone);
-    parseUser.set<Company?>(UserColumnNamesParseServer.company, user.company);
-    parseUser.set<bool?>(UserColumnNamesParseServer.active, user.active);
-    parseUser.set<DateTime?>(UserColumnNamesParseServer.updateAt, user.updateAt);
-    parseUser.set<DateTime?>(UserColumnNamesParseServer.createAt, user.createAt);
     parseUser.set<bool?>(UserColumnNamesParseServer.emailVerified, user.emailVerified);
     parseUser.set<String?>(UserColumnNamesParseServer.address, user.address);
     parseUser.set<String?>(UserColumnNamesParseServer.number, user.number);

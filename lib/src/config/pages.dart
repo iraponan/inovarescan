@@ -29,6 +29,7 @@ mixin AppPages {
       name: PageRoutes.signInRoute,
       page: () => const SignInScreen(),
       bindings: [
+        AuthBinding(),
         CompanyBinding(),
         SqlServerConnectionBinding(),
         UserCronosBinding(),
@@ -36,7 +37,9 @@ mixin AppPages {
     ),
     GetPage(
       name: PageRoutes.signUpRoute,
-      page: () => const SignUpScreen(),
+      page: () => SignUpScreen(
+        userCronos: Get.parameters['userCronos'] ?? '',
+      ),
       bindings: [
         CompanyBinding(),
         AuthBinding(),
