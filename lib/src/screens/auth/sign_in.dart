@@ -32,6 +32,7 @@ class _SignInScreenState extends State<SignInScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: CustomColors.customSwathColor,
       body: SingleChildScrollView(
         child: SizedBox(
           width: size.width,

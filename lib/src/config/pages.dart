@@ -2,12 +2,13 @@ import 'package:get/get.dart';
 import 'package:inovarescan/src/bindings/auth.dart';
 import 'package:inovarescan/src/bindings/company.dart';
 import 'package:inovarescan/src/bindings/internet_connection.dart';
+import 'package:inovarescan/src/bindings/navigation.dart';
 import 'package:inovarescan/src/bindings/sql_server_connection.dart';
 import 'package:inovarescan/src/bindings/user_cronos.dart';
 import 'package:inovarescan/src/config/page_routes.dart';
 import 'package:inovarescan/src/screens/auth/sign_in.dart';
 import 'package:inovarescan/src/screens/auth/sign_up.dart';
-import 'package:inovarescan/src/screens/base.dart';
+import 'package:inovarescan/src/screens/base/base.dart';
 import 'package:inovarescan/src/screens/splash/connection_error.dart';
 import 'package:inovarescan/src/screens/splash/init.dart';
 
@@ -49,6 +50,9 @@ mixin AppPages {
     GetPage(
       name: PageRoutes.baseRoute,
       page: () => const BaseScreen(),
+      bindings: [
+        NavigationBinding(),
+      ],
     ),
   ];
 }

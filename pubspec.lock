@@ -62,6 +62,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  bottom_bar_matu:
+    dependency: "direct main"
+    description:
+      name: bottom_bar_matu
+      sha256: "1566e067210380b543db1a548499e57d39dd8f5ceb9eaa878d036f82d886353e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.0"
   brasil_fields:
     dependency: "direct main"
     description:
@@ -1022,10 +1030,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "68d1e89a91ed61ad9c370f9f8b6effed9ae5e0ede22a270bdfa6daf79fc2290a"
+      sha256: "4d45dc9069dba4619dc0ebd93c7cec5e66d8482cb625a370ac806dcc8165f2ec"
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.4"
+    version: "5.5.5"
   xdg_directories:
     dependency: transitive
     description:

@@ -48,6 +48,7 @@ dependencies:
   mssql_connection: ^1.1.3
   search_cep: ^4.0.1
   http: ^0.13.6
+  bottom_bar_matu: ^1.5.0
 
 dev_dependencies:
   flutter_test:
@@ -107,14 +108,5 @@ flutter:
     - lib/src/config/.env
     - assets/icon/icon.png
     - assets/images/Logo-Inovare-TI.png
-    - assets/images/Logo-Fundo-Transparente.png
     - assets/images/Logo-Inovare-TI-Branca.png
-
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/icon/icon.png"
-  min_sdk_android: 21 # android min sdk min:16, default 21
-  web:
-    generate: true
-    image_path: "assets/icon/icon.png"
+    - assets/images/Logo-Fundo-Transparente.png
