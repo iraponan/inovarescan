@@ -5,6 +5,7 @@ import 'package:inovarescan/src/config/custom_colors.dart';
 import 'package:inovarescan/src/controllers/navigation.dart';
 import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/screens/base/components/custom_bottom_bar_item.dart';
+import 'package:inovarescan/src/screens/home/home.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({super.key});
@@ -26,9 +27,7 @@ class _BaseScreenState extends State<BaseScreen> {
         controller: navigationController.pageController,
         physics: NeverScrollableScrollPhysics(),
         children: [
-          Container(
-            color: Colors.red,
-          ),
+          HomeScreen(),
           Container(
             color: Colors.yellow,
           ),
@@ -42,7 +41,7 @@ class _BaseScreenState extends State<BaseScreen> {
       ),
       bottomNavigationBar: Obx(
         () {
-          return BottomBarBubble(
+          return BottomBarDoubleBullet(
             backgroundColor: CustomColors.customSwathColor,
             selectedIndex: navigationController.currentIndex,
             items: [

@@ -30,7 +30,7 @@ class _ValidateCompanyDialogState extends State<ValidateCompanyDialog> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 22),
                   child: Text(
                     'Qual empresa você pertence?',
                     textAlign: TextAlign.center,

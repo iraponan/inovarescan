@@ -1,5 +1,5 @@
 <div style="text-align: center;">
-    <img src="\assets\images\logo-inovare-ti.png" alt="InovareScan Logo" width="300px"/>
+    <img src="assets\images\Logo-Inovare-TI.png" alt="InovareScan Logo" width="300px"/>
 </div>
 <div style="text-align: center;">
     <img src="\assets\icon\icon.png" alt="InovareScan Logo" width="300px"/>
