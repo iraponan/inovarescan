@@ -1,5 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:inovarescan/src/config/custom_colors.dart';
+import 'package:inovarescan/src/screens/home/components/indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,7 +17,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Column(
+          children: [
+            Text('Home'),
+            Text('Indicadores de Desempenho'),
+          ],
+        ),
         centerTitle: true,
         actions: [
           IconButton(
@@ -31,7 +38,102 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               Text(
-                'Qtd. de pedidos x Qtd. separada.',
+                '% de separações feitas no dia.',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Indicator(
+                        color: CustomColors.customContrastColor,
+                        text: 'Falta Separar',
+                        isSquare: false,
+                        size: touchedIndex == 0 ? 20 : 16,
+                        textColor: touchedIndex == 0 ? CustomColors.customContrastColor : Colors.black,
+                      ),
+                      Indicator(
+                        color: CustomColors.customSwathColor,
+                        text: 'Separados',
+                        isSquare: false,
+                        size: touchedIndex == 1 ? 20 : 16,
+                        textColor: touchedIndex == 1 ? CustomColors.customSwathColor : Colors.black,
+                      ),
+                    ],
+                  ),
+                  AspectRatio(
+                    aspectRatio: 2.0,
+                    child: PieChart(
+                      PieChartData(
+                        pieTouchData: PieTouchData(
+                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                            setState(() {
+                              if (!event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null) {
+                                touchedIndex = -1;
+                                return;
+                              }
+                              touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                            });
+                          },
+                        ),
+                        borderData: FlBorderData(
+                          show: false,
+                        ),
+                        sectionsSpace: 0,
+                        centerSpaceRadius: 40,
+                        sections: List.generate(2, (i) {
+                          final isTouched = i == touchedIndex;
+                          final fontSize = isTouched ? 25.0 : 16.0;
+                          final radius = isTouched ? 60.0 : 50.0;
+                          const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+                          switch (i) {
+                            case 0:
+                              return PieChartSectionData(
+                                color: CustomColors.customContrastColor,
+                                value: 30,
+                                title: '30%',
+                                radius: radius,
+                                titleStyle: TextStyle(
+                                  fontSize: fontSize,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  shadows: shadows,
+                                ),
+                              );
+                            case 1:
+                              return PieChartSectionData(
+                                color: CustomColors.customSwathColor,
+                                value: 70,
+                                title: '70%',
+                                radius: radius,
+                                titleStyle: TextStyle(
+                                  fontSize: fontSize,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  shadows: shadows,
+                                ),
+                              );
+                            default:
+                              throw Error();
+                          }
+                        }),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Divider(
+                color: Colors.black,
+                indent: 10,
+                endIndent: 10,
+                thickness: 1.5,
+              ),
+              Text(
+                'Qtd. separada por separador.',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -45,36 +147,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       BarChartGroupData(
                         x: 1,
                         barRods: [
-                          BarChartRodData(toY: 10, color: Colors.redAccent),
-                          BarChartRodData(toY: 8, color: Colors.greenAccent),
+                          BarChartRodData(toY: 10, color: CustomColors.customContrastColor),
                         ],
                       ),
                       BarChartGroupData(
                         x: 2,
                         barRods: [
-                          BarChartRodData(toY: 8, color: Colors.redAccent),
-                          BarChartRodData(toY: 5, color: Colors.greenAccent),
+                          BarChartRodData(toY: 8, color: CustomColors.customContrastColor),
                         ],
                       ),
                       BarChartGroupData(
                         x: 3,
                         barRods: [
-                          BarChartRodData(toY: 2, color: Colors.redAccent),
-                          BarChartRodData(toY: 0, color: Colors.greenAccent),
+                          BarChartRodData(toY: 2, color: CustomColors.customContrastColor),
                         ],
                       ),
                       BarChartGroupData(
                         x: 4,
                         barRods: [
-                          BarChartRodData(toY: 9, color: Colors.redAccent),
-                          BarChartRodData(toY: 7, color: Colors.greenAccent),
+                          BarChartRodData(toY: 9, color: CustomColors.customContrastColor),
                         ],
                       ),
                       BarChartGroupData(
                         x: 5,
                         barRods: [
-                          BarChartRodData(toY: 6, color: Colors.redAccent),
-                          BarChartRodData(toY: 3, color: Colors.greenAccent),
+                          BarChartRodData(toY: 6, color: CustomColors.customContrastColor),
                         ],
                       ),
                     ],
@@ -88,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       bottomTitles: AxisTitles(
-                        axisNameWidget: Text('Dias da Semana'),
+                        axisNameWidget: Text('Separadores'),
                         sideTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 23,
@@ -96,22 +193,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             Widget text;
                             switch (value.toInt()) {
                               case 0:
-                                text = const Text('Dom.');
+                                text = const Text('João');
                                 break;
                               case 1:
-                                text = const Text('Seg');
+                                text = const Text('Pedro');
                                 break;
                               case 2:
-                                text = const Text('Ter');
+                                text = const Text('Jair');
                                 break;
                               case 3:
-                                text = const Text('Qua');
+                                text = const Text('Luiz');
                                 break;
                               case 4:
-                                text = const Text('Qui');
+                                text = const Text('Maria');
                                 break;
                               case 5:
-                                text = const Text('Sex');
+                                text = const Text('Jose');
                                 break;
                               case 6:
                                 text = const Text('Sáb');
@@ -168,13 +265,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         gradient: LinearGradient(
                           colors: [
                             Colors.redAccent,
-                            Colors.yellowAccent,
-                            Colors.greenAccent,
+                            CustomColors.customSwathColor,
+                            CustomColors.customContrastColor,
+                            CustomColors.customContrastColor2,
                           ],
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
                         ),
-                        barWidth: 8,
+                        barWidth: 2,
                         isCurved: true,
                         curveSmoothness: 0.35,
                         isStrokeCapRound: true,
@@ -185,24 +283,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         aboveBarData: BarAreaData(
                           show: true,
-                          //color: Colors.green.withOpacity(0.3),
+                          color: CustomColors.customContrastColor2.withOpacity(0.3),
                         ),
-                        // dotData: FlDotData(
-                        //   show: true,
-                        //   checkToShowDot: (spot, barData) {
-                        //     return spot.x % 2 == 0;
-                        //   },
-                        //   getDotPainter: (spot, xPercentage, bar, index, {double? size}) {
-                        //     return FlDotCrossPainter(
-                        //       size: 20,
-                        //       color: [
-                        //         Colors.red,
-                        //         Colors.blue,
-                        //         Colors.green,
-                        //       ][index % 3],
-                        //     );
-                        //   },
-                        // ),
+                        dotData: FlDotData(
+                          show: true,
+                          checkToShowDot: (spot, barData) {
+                            return spot.x % 2 == 0;
+                          },
+                          getDotPainter: (spot, xPercentage, bar, index, {double? size}) {
+                            return FlDotCirclePainter(
+                              radius: 4,
+                              color: CustomColors.customSwathColor,
+                            );
+                          },
+                        ),
                       ),
                     ],
                     titlesData: FlTitlesData(
@@ -239,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 thickness: 1.5,
               ),
               Text(
-                '% de separações feitas no dia.',
+                'Qtd. de pedidos x Qtd. separada.',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -247,60 +341,96 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               AspectRatio(
                 aspectRatio: 2.0,
-                child: PieChart(
-                  PieChartData(
-                    pieTouchData: PieTouchData(
-                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                        setState(() {
-                          if (!event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null) {
-                            touchedIndex = -1;
-                            return;
-                          }
-                          touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
-                        });
-                      },
+                child: BarChart(
+                  BarChartData(
+                    barGroups: [
+                      BarChartGroupData(
+                        x: 1,
+                        barRods: [
+                          BarChartRodData(toY: 10, color: CustomColors.customContrastColor),
+                          BarChartRodData(toY: 8, color: CustomColors.customContrastColor2),
+                        ],
+                      ),
+                      BarChartGroupData(
+                        x: 2,
+                        barRods: [
+                          BarChartRodData(toY: 8, color: CustomColors.customContrastColor),
+                          BarChartRodData(toY: 5, color: CustomColors.customContrastColor2),
+                        ],
+                      ),
+                      BarChartGroupData(
+                        x: 3,
+                        barRods: [
+                          BarChartRodData(toY: 2, color: CustomColors.customContrastColor),
+                          BarChartRodData(toY: 0, color: CustomColors.customContrastColor2),
+                        ],
+                      ),
+                      BarChartGroupData(
+                        x: 4,
+                        barRods: [
+                          BarChartRodData(toY: 9, color: CustomColors.customContrastColor),
+                          BarChartRodData(toY: 7, color: CustomColors.customContrastColor2),
+                        ],
+                      ),
+                      BarChartGroupData(
+                        x: 5,
+                        barRods: [
+                          BarChartRodData(toY: 6, color: CustomColors.customContrastColor),
+                          BarChartRodData(toY: 3, color: CustomColors.customContrastColor2),
+                        ],
+                      ),
+                    ],
+                    titlesData: FlTitlesData(
+                      show: true,
+                      leftTitles: AxisTitles(
+                        axisNameWidget: Text('Qtd.'),
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 25,
+                        ),
+                      ),
+                      bottomTitles: AxisTitles(
+                        axisNameWidget: Text('Dias da Semana'),
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 23,
+                          getTitlesWidget: (value, meta) {
+                            Widget text;
+                            switch (value.toInt()) {
+                              case 0:
+                                text = const Text('Dom.');
+                                break;
+                              case 1:
+                                text = const Text('Seg');
+                                break;
+                              case 2:
+                                text = const Text('Ter');
+                                break;
+                              case 3:
+                                text = const Text('Qua');
+                                break;
+                              case 4:
+                                text = const Text('Qui');
+                                break;
+                              case 5:
+                                text = const Text('Sex');
+                                break;
+                              case 6:
+                                text = const Text('Sáb');
+                                break;
+                              default:
+                                text = const Text('');
+                                break;
+                            }
+                            return SideTitleWidget(
+                              axisSide: meta.axisSide,
+                              //space: 16,
+                              child: text,
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                    borderData: FlBorderData(
-                      show: false,
-                    ),
-                    sectionsSpace: 0,
-                    centerSpaceRadius: 40,
-                    sections: List.generate(2, (i) {
-                      final isTouched = i == touchedIndex;
-                      final fontSize = isTouched ? 25.0 : 16.0;
-                      final radius = isTouched ? 60.0 : 50.0;
-                      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-                      switch (i) {
-                        case 0:
-                          return PieChartSectionData(
-                            color: Colors.redAccent,
-                            value: 30,
-                            title: '30%',
-                            radius: radius,
-                            titleStyle: TextStyle(
-                              fontSize: fontSize,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              shadows: shadows,
-                            ),
-                          );
-                        case 1:
-                          return PieChartSectionData(
-                            color: Colors.greenAccent,
-                            value: 70,
-                            title: '70%',
-                            radius: radius,
-                            titleStyle: TextStyle(
-                              fontSize: fontSize,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              shadows: shadows,
-                            ),
-                          );
-                        default:
-                          throw Error();
-                      }
-                    }),
                   ),
                 ),
               ),
