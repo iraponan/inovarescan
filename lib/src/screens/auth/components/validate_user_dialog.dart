@@ -75,10 +75,15 @@ class _ValidateCompanyDialogState extends State<ValidateUserDialog> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         FocusScope.of(context).unfocus();
-                        if (await controller.validateUser(usernameController.text, passwordController.text)) {
-                          Get.back(result: usernameController.text);
+                        await controller.validateUserExists(usernameController.text);
+                        if (!controller.userExists) {
+                          if (await controller.validateUser(usernameController.text, passwordController.text)) {
+                            Get.back(result: usernameController.text);
+                          } else {
+                            Utils.showToast(message: 'O usuário e senha informado esta errado ou não pertence a empresa informada.', isError: true);
+                          }
                         } else {
-                          Utils.showToast(message: 'O usuário e senha informado esta errado ou não pertence a empresa informada.', isError: true);
+                          Utils.showToast(message: 'O usuário informado já esta cadastrado em nossa base de dados.', isError: true);
                         }
                       }
                     },

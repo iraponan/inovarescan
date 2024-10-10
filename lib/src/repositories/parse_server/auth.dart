@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+import 'package:inovarescan/src/controllers/company.dart';
 import 'package:inovarescan/src/helpers/paser_server_consts/column_tables.dart';
 import 'package:inovarescan/src/helpers/paser_server_consts/tables.dart';
 import 'package:inovarescan/src/helpers/utils/parse_erros.dart';
@@ -87,6 +89,30 @@ class AuthRepository {
       }
     } else {
       return UserProfileResult.error(ParseErrors.getDescription(responseLogin.error?.code ?? -1));
+    }
+  }
+
+  Future<UserProfileResult> validateUserCronosExists(String username) async {
+    final companyController = Get.find<CompanyController>();
+    final queryBuilder = QueryBuilder(ParseObject(TablesNamesParseServer.user))
+      ..whereEqualTo(UserColumnNamesParseServer.userCronos, username)
+      ..whereEqualTo(
+        UserColumnNamesParseServer.company,
+        ParseObject(TablesNamesParseServer.company)..set(CompanyColumnNamesParseServer.id, companyController.company.id),
+      );
+
+    final response = await queryBuilder.query();
+
+    if (response.success) {
+      if ((response.results ?? []).isNotEmpty) {
+        return UserProfileResult.success(true);
+      } else {
+        return UserProfileResult.success(false);
+      }
+    } else {
+      return UserProfileResult.error(
+        ParseErrors.getDescription(response.error?.code ?? -1),
+      );
     }
   }
 
