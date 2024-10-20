@@ -1,4 +1,4 @@
-import 'package:inovarescan/src/helpers/paser_server_consts/column_tables.dart';
+import 'package:inovarescan/src/helpers/paser_server/column_tables.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 class Company {

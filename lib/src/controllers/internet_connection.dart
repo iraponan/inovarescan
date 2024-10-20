@@ -5,7 +5,6 @@ import 'package:inovarescan/src/services/internet_connection.dart';
 
 class InternetConnectionController extends GetxController {
   Future<void> validateConnection() async {
-    await Future.delayed(Duration(seconds: 3));
     bool statusConnection = await InternetConnectionCheck.checkConnection();
     if (statusConnection) {
       Get.find<AuthController>().getCurrentUser();

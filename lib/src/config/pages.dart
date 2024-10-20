@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:inovarescan/src/bindings/auth.dart';
 import 'package:inovarescan/src/bindings/company.dart';
+import 'package:inovarescan/src/bindings/home.dart';
 import 'package:inovarescan/src/bindings/internet_connection.dart';
 import 'package:inovarescan/src/bindings/navigation.dart';
 import 'package:inovarescan/src/bindings/sql_server_connection.dart';
@@ -51,7 +52,10 @@ mixin AppPages {
       name: PageRoutes.baseRoute,
       page: () => const BaseScreen(),
       bindings: [
+        CompanyBinding(),
+        SqlServerConnectionBinding(),
         NavigationBinding(),
+        HomeBinding(),
       ],
     ),
   ];

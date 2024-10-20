@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:inovarescan/src/controllers/company.dart';
-import 'package:inovarescan/src/helpers/paser_server_consts/column_tables.dart';
-import 'package:inovarescan/src/helpers/paser_server_consts/tables.dart';
+import 'package:inovarescan/src/helpers/paser_server/column_tables.dart';
+import 'package:inovarescan/src/helpers/paser_server/tables.dart';
 import 'package:inovarescan/src/helpers/utils/parse_erros.dart';
 import 'package:inovarescan/src/models/user.dart';
 import 'package:inovarescan/src/results/auth.dart';

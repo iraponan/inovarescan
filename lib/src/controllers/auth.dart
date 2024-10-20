@@ -139,8 +139,9 @@ class AuthController extends GetxController {
     );
   }
 
-  void saveTokenAndProceedToBase() {
-    StorageFiles.saveLocalData(key: StorageKeys.token, data: user.token!);
+  void saveTokenAndProceedToBase() async {
+    await StorageFiles.saveLocalData(key: StorageKeys.token, data: user.token!);
+    //await Future.delayed(Duration(seconds: 3));
     Get.offAllNamed(PageRoutes.baseRoute);
   }
 }
