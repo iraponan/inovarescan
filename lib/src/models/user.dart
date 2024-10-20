@@ -71,6 +71,30 @@ class User {
     );
   }
 
+  factory User.fromParseObject(ParseObject object) {
+    return User(
+      id: object.objectId,
+      token: '',
+      fullName: object.get<String>(UserColumnNamesParseServer.fullName),
+      email: object.get<String>(UserColumnNamesParseServer.email),
+      userCronos: object.get<String>(UserColumnNamesParseServer.userCronos),
+      cpf: object.get<String>(UserColumnNamesParseServer.cpf),
+      phone: object.get<String>(UserColumnNamesParseServer.phone),
+      company: Company.fromParserObject(object.get(UserColumnNamesParseServer.company)),
+      active: object.get<bool>(UserColumnNamesParseServer.active),
+      updateAt: object.get<DateTime>(UserColumnNamesParseServer.updateAt),
+      createAt: object.get<DateTime>(UserColumnNamesParseServer.createAt),
+      emailVerified: object.get<bool>(UserColumnNamesParseServer.emailVerified),
+      address: object.get<String>(UserColumnNamesParseServer.address),
+      number: object.get<String>(UserColumnNamesParseServer.number),
+      neighbourhood: object.get<String>(UserColumnNamesParseServer.neighbourhood),
+      complement: object.get<String>(UserColumnNamesParseServer.complement),
+      city: object.get<String>(UserColumnNamesParseServer.city),
+      state: object.get<String>(UserColumnNamesParseServer.state),
+      postCode: object.get<String>(UserColumnNamesParseServer.postCode),
+    );
+  }
+
   @override
   String toString() {
     return 'User{id: $id, token: $token, fullName: $fullName, password: $password, email: $email, userCronos: $userCronos, cpf: $cpf, phone: $phone, company: $company,'

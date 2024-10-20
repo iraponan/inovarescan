@@ -6,6 +6,7 @@ import 'package:inovarescan/src/config/page_routes.dart';
 import 'package:inovarescan/src/controllers/auth.dart';
 import 'package:inovarescan/src/controllers/company.dart';
 import 'package:inovarescan/src/helpers/utils/consts.dart';
+import 'package:inovarescan/src/helpers/utils/utils.dart';
 import 'package:inovarescan/src/screens/auth/components/validate_email_dialog.dart';
 import 'package:inovarescan/src/screens/common_widgets/custom_text_field.dart';
 import 'package:inovarescan/src/services/search_cep.dart';
@@ -275,18 +276,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             if (formKey.currentState!.validate()) {
                                               FocusScope.of(context).unfocus();
                                               formKey.currentState!.save();
-                                              final int codeValid = await ValidateEmail.sendEmailValidator(authController.user.email);
-                                              if (codeValid != 0) {
-                                                if (context.mounted) {
-                                                  final bool? result = await showDialog(
-                                                    context: context,
-                                                    builder: (context) => ValidateEmailDialog(codeValid: codeValid.toString()),
-                                                  );
-                                                  if (result ?? false) {
-                                                    authController.user.emailVerified = true;
-                                                    await authController.signUp();
-                                                    Get.offAllNamed(PageRoutes.baseRoute);
+                                              if (await authController.signUp()) {
+                                                Get.offAllNamed(PageRoutes.signInRoute);
+                                                final int codeValid = await ValidateEmail.sendEmailValidator(authController.user.email);
+                                                if (codeValid != 0) {
+                                                  if (context.mounted) {
+                                                    final bool? result = await showDialog(
+                                                      context: context,
+                                                      builder: (context) => ValidateEmailDialog(codeValid: codeValid.toString()),
+                                                    );
+                                                    if (result ?? false) {
+                                                      authController.user.emailVerified = true;
+                                                      authController.updateEmailValidation(authController.user.email!, true);
+                                                      Utils.showToast(
+                                                          message: 'Aguarde o administrador da empresa aceitar seu usuário e depois tente fazer o login.', isInfo: true);
+                                                    }
                                                   }
+                                                } else {
+                                                  Utils.showToast(message: 'Não foi possível o e-mail de verificação!\nPor favor tente novamente mais tarde.');
                                                 }
                                               }
                                             }

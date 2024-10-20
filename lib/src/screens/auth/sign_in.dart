@@ -9,10 +9,12 @@ import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/helpers/utils/utils.dart';
 import 'package:inovarescan/src/screens/auth/components/forgot_password_dialog.dart';
 import 'package:inovarescan/src/screens/auth/components/validate_company_dialog.dart';
+import 'package:inovarescan/src/screens/auth/components/validate_email_dialog.dart';
 import 'package:inovarescan/src/screens/auth/components/validate_user_dialog.dart';
 import 'package:inovarescan/src/screens/common_widgets/app_name.dart';
 import 'package:inovarescan/src/screens/common_widgets/custom_text_field.dart';
 import 'package:inovarescan/src/services/sql_server_connection.dart';
+import 'package:inovarescan/src/services/validate_email.dart';
 import 'package:inovarescan/src/services/validators.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -24,7 +26,7 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final formKey = GlobalKey<FormState>();
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
@@ -85,7 +87,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     children: [
                       // # E-mail #
                       CustomTextField(
-                        controller: usernameController,
+                        controller: emailController,
                         labelText: 'E-mail',
                         prefixIcon: Icons.email,
                         textInputType: TextInputType.emailAddress,
@@ -111,7 +113,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   : () {
                                       FocusScope.of(context).unfocus();
                                       if (formKey.currentState!.validate()) {
-                                        String email = usernameController.text;
+                                        String email = emailController.text;
                                         String password = passwordController.text;
                                         authController.signIn(email: email, password: password);
                                       }
@@ -130,27 +132,61 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       // # Esqueceu a Senha #
                       Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () async {
-                            final bool? result = await showDialog(
-                              context: context,
-                              builder: (context) => ForgotPasswordDialog(
-                                email: usernameController.text,
+                          alignment: Alignment.centerRight,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GetBuilder<AuthController>(builder: (controller) {
+                                return TextButton(
+                                  onPressed: () async {
+                                    if (emailController.text.isEmpty) {
+                                      Utils.showToast(message: 'Informe seu e-mail no campo de e-mail acima para enviar o email de validação.', isError: true);
+                                    } else {
+                                      final int codeValid = await ValidateEmail.sendEmailValidator(emailController.text);
+                                      if (codeValid != 0) {
+                                        if (context.mounted) {
+                                          final bool? result = await showDialog(
+                                            context: context,
+                                            builder: (context) => ValidateEmailDialog(codeValid: codeValid.toString()),
+                                          );
+                                          if (result ?? false) {
+                                            controller.updateEmailValidation(emailController.text, true);
+                                          }
+                                        }
+                                      } else {
+                                        Utils.showToast(message: 'Não foi possível o e-mail de verificação!\nPor favor tente novamente mais tarde.');
+                                      }
+                                    }
+                                  },
+                                  child: Text(
+                                    'Validar e-mail?',
+                                    style: TextStyle(
+                                      color: CustomColors.customContrastColor,
+                                    ),
+                                  ),
+                                );
+                              }),
+                              TextButton(
+                                onPressed: () async {
+                                  final bool? result = await showDialog(
+                                    context: context,
+                                    builder: (context) => ForgotPasswordDialog(
+                                      email: emailController.text,
+                                    ),
+                                  );
+                                  if (result ?? false) {
+                                    Utils.showToast(message: 'Verifique Seu E-mail!');
+                                  }
+                                },
+                                child: Text(
+                                  'Esqueceu a Senha?',
+                                  style: TextStyle(
+                                    color: CustomColors.customContrastColor,
+                                  ),
+                                ),
                               ),
-                            );
-                            if (result ?? false) {
-                              Utils.showToast(message: 'Verifique Seu E-mail!');
-                            }
-                          },
-                          child: Text(
-                            'Esqueceu a Senha?',
-                            style: TextStyle(
-                              color: CustomColors.customContrastColor,
-                            ),
-                          ),
-                        ),
-                      ),
+                            ],
+                          )),
                       // Divisor
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),

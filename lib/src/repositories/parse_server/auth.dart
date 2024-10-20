@@ -7,6 +7,7 @@ import 'package:inovarescan/src/models/user.dart';
 import 'package:inovarescan/src/results/auth.dart';
 import 'package:inovarescan/src/results/reset_password.dart';
 import 'package:inovarescan/src/results/user_profile.dart';
+import 'package:inovarescan/src/results/validate_email.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 class AuthRepository {
@@ -36,7 +37,7 @@ class AuthRepository {
     parseUser.set<String?>(UserColumnNamesParseServer.fullName, user.fullName);
     parseUser.set<String?>(UserColumnNamesParseServer.cpf, user.cpf);
     parseUser.set<String?>(UserColumnNamesParseServer.phone, user.phone);
-    parseUser.set<bool?>(UserColumnNamesParseServer.emailVerified, user.emailVerified);
+    parseUser.set<bool>(UserColumnNamesParseServer.emailVerified, false);
     parseUser.set<String?>(UserColumnNamesParseServer.address, user.address);
     parseUser.set<String?>(UserColumnNamesParseServer.number, user.number);
     parseUser.set<String?>(UserColumnNamesParseServer.neighbourhood, user.neighbourhood);
@@ -48,6 +49,36 @@ class AuthRepository {
     final response = await parseUser.save();
 
     return handleUserOrError(response);
+  }
+
+  Future<void> signOut({required User user}) async {
+    final parseUser = ParseUser(user.email, user.password, user.email);
+    await parseUser.logout(deleteLocalUserData: true);
+  }
+
+  Future<ValidateEmailResult> updateEmailValidation({required String email, required bool value}) async {
+    final queryBuilder = QueryBuilder(ParseObject(TablesNamesParseServer.user))..whereEqualTo(UserColumnNamesParseServer.username, email);
+    final queryResponse = await queryBuilder.query();
+    User user;
+
+    if (queryResponse.success) {
+      user = User.fromParseObject(queryResponse.results?.first);
+      final parseUser = ParseUser(user.email, user.password, user.email)
+        ..set(UserColumnNamesParseServer.id, user.id)
+        ..set(UserColumnNamesParseServer.emailVerified, value);
+
+      final response = await parseUser.update();
+
+      if (response.success) {
+        return ValidateEmailResult.success();
+      } else {
+        return ValidateEmailResult.error(
+          ParseErrors.getDescription(response.error?.code ?? -1),
+        );
+      }
+    } else {
+      return ValidateEmailResult.error('Não foi possível marcar e-mail como verificado.\nPor favor tente novamente mais tarde.');
+    }
   }
 
   Future<ResetPasswordResult> resetPassword(String email) async {

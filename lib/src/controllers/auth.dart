@@ -45,7 +45,17 @@ class AuthController extends GetxController {
     result.when(
       success: (user) {
         this.user = user;
-        saveTokenAndProceedToBase();
+        if (user.active ?? false) {
+          if (user.emailVerified ?? false) {
+            saveTokenAndProceedToBase();
+          } else {
+            Utils.showToast(message: 'E-mail do Usuário não foi validado ainda.\nPor favor valide seu e-mail e tente novamente.', isInfo: true);
+            signOut();
+          }
+        } else {
+          Utils.showToast(message: 'Usuário não ativo.\nFale com o administrador da empresa para ativar seu usuário.', isInfo: true);
+          signOut();
+        }
       },
       error: (message) {
         Utils.showToast(message: message, isError: true);
@@ -54,12 +64,14 @@ class AuthController extends GetxController {
   }
 
   Future<void> signOut() async {
-    user = User();
-    StorageFiles.removeLocalData(key: StorageKeys.token);
+    _authRepository.signOut(user: user);
+    StorageFiles.removeLocalData(key: user.token ?? '');
     Get.offAllNamed(PageRoutes.signInRoute);
+    user = User();
   }
 
-  Future<void> signUp() async {
+  Future<bool> signUp() async {
+    bool userSingUp = false;
     FocusManager.instance.primaryFocus?.unfocus();
     isLoading.value = true;
     AuthResult result = await _authRepository.signUp(user: user);
@@ -67,12 +79,14 @@ class AuthController extends GetxController {
     result.when(
       success: (user) {
         this.user = user;
-        saveTokenAndProceedToBase();
+        userSingUp = true;
       },
       error: (message) {
         Utils.showToast(message: message, isError: true);
+        userSingUp = false;
       },
     );
+    return userSingUp;
   }
 
   Future<void> resetPassword(String email) async {
@@ -106,6 +120,18 @@ class AuthController extends GetxController {
       success: (value) {
         Utils.showToast(message: 'A senha foi atualizada com sucesso!', isInfo: true);
         signOut();
+      },
+      error: (message) {
+        Utils.showToast(message: message, isError: true);
+      },
+    );
+  }
+
+  Future<void> updateEmailValidation(String email, bool value) async {
+    final result = await _authRepository.updateEmailValidation(email: email, value: value);
+    result.when(
+      success: () {
+        Utils.showToast(message: 'E-mail validado com sucesso.');
       },
       error: (message) {
         Utils.showToast(message: message, isError: true);
