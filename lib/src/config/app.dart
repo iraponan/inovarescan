@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:inovarescan/src/config/page_routes.dart';
 import 'package:inovarescan/src/config/pages.dart';
@@ -16,6 +17,16 @@ class AppInovareScan extends StatelessWidget {
       initialRoute: PageRoutes.initRoute,
       getPages: AppPages.pages,
       enableLog: false,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('pt', 'BR'),
+        Locale('en'), // English
+        Locale('es'), // Spanish
+      ],
     );
   }
 }

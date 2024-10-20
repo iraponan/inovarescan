@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Column(
@@ -29,13 +33,55 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              homeController.refreshData();
+            },
             icon: Icon(
               Icons.refresh_outlined,
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              final results = await showCalendarDatePicker2Dialog(
+                context: context,
+                config: CalendarDatePicker2WithActionButtonsConfig(
+                  calendarType: CalendarDatePicker2Type.range,
+                  animateToDisplayedMonthDate: true,
+                  centerAlignModePicker: true,
+                  weekdayLabels: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                  openedFromDialog: true,
+                ),
+                dialogSize: Size(size.width, size.height / 3),
+                useSafeArea: true,
+                builder: (context, child) {
+                  return Dialog(
+                    insetPadding: EdgeInsets.all(8),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Período de Analise',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          child ?? SizedBox(),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+              log(results.toString());
+              homeController.dateIni = results?.first ?? homeController.dateIni;
+              homeController.dateEnd = results?.last ?? homeController.dateIni;
+              homeController.refreshData();
+              log(homeController.ordersPeriod.toString());
+            },
             icon: Icon(
               Icons.tune,
             ),
@@ -75,147 +121,150 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    AspectRatio(
-                      aspectRatio: 2.0,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: PieChart(
-                                    PieChartData(
-                                      pieTouchData: PieTouchData(
-                                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                                          setState(() {
-                                            if (!event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null) {
-                                              touchedIndex = -1;
-                                              return;
-                                            }
-                                            touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
-                                          });
-                                        },
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: AspectRatio(
+                        aspectRatio: 2.0,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: PieChart(
+                                      PieChartData(
+                                        pieTouchData: PieTouchData(
+                                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                                            setState(() {
+                                              if (!event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null) {
+                                                touchedIndex = -1;
+                                                return;
+                                              }
+                                              touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                                            });
+                                          },
+                                        ),
+                                        borderData: FlBorderData(
+                                          show: false,
+                                        ),
+                                        sectionsSpace: 0,
+                                        centerSpaceRadius: 40,
+                                        sections: List.generate(2, (i) {
+                                          final isTouched = i == touchedIndex;
+                                          final fontSize = isTouched ? 25.0 : 16.0;
+                                          final radius = isTouched ? 60.0 : 50.0;
+                                          const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+                                          switch (i) {
+                                            case 0:
+                                              return PieChartSectionData(
+                                                color: CustomColors.customContrastColor,
+                                                value: homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.percNSeparado],
+                                                title: '${homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.percNSeparado]}%',
+                                                radius: radius,
+                                                titleStyle: TextStyle(
+                                                  fontSize: fontSize,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  shadows: shadows,
+                                                ),
+                                              );
+                                            case 1:
+                                              return PieChartSectionData(
+                                                color: CustomColors.customSwathColor,
+                                                value: homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.percSeparado],
+                                                title: '${homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.percSeparado]}%',
+                                                radius: radius,
+                                                titleStyle: TextStyle(
+                                                  fontSize: fontSize,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  shadows: shadows,
+                                                ),
+                                              );
+                                            default:
+                                              throw Error();
+                                          }
+                                        }),
                                       ),
-                                      borderData: FlBorderData(
-                                        show: false,
-                                      ),
-                                      sectionsSpace: 0,
-                                      centerSpaceRadius: 40,
-                                      sections: List.generate(2, (i) {
-                                        final isTouched = i == touchedIndex;
-                                        final fontSize = isTouched ? 25.0 : 16.0;
-                                        final radius = isTouched ? 60.0 : 50.0;
-                                        const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-                                        switch (i) {
-                                          case 0:
-                                            return PieChartSectionData(
-                                              color: CustomColors.customContrastColor,
-                                              value: homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.percNSeparado],
-                                              title: '${homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.percNSeparado]}%',
-                                              radius: radius,
-                                              titleStyle: TextStyle(
-                                                fontSize: fontSize,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                shadows: shadows,
-                                              ),
-                                            );
-                                          case 1:
-                                            return PieChartSectionData(
-                                              color: CustomColors.customSwathColor,
-                                              value: homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.percSeparado],
-                                              title: '${homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.percSeparado]}%',
-                                              radius: radius,
-                                              titleStyle: TextStyle(
-                                                fontSize: fontSize,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                shadows: shadows,
-                                              ),
-                                            );
-                                          default:
-                                            throw Error();
-                                        }
-                                      }),
                                     ),
                                   ),
-                                ),
-                                Text(
-                                  'Percentual',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                                  Text(
+                                    'Percentual',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: PieChart(
-                                    PieChartData(
-                                      pieTouchData: PieTouchData(
-                                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                                          setState(() {
-                                            if (!event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null) {
-                                              touchedIndex = -1;
-                                              return;
-                                            }
-                                            touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
-                                          });
-                                        },
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: PieChart(
+                                      PieChartData(
+                                        pieTouchData: PieTouchData(
+                                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                                            setState(() {
+                                              if (!event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null) {
+                                                touchedIndex = -1;
+                                                return;
+                                              }
+                                              touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                                            });
+                                          },
+                                        ),
+                                        borderData: FlBorderData(
+                                          show: false,
+                                        ),
+                                        sectionsSpace: 0,
+                                        centerSpaceRadius: 40,
+                                        sections: List.generate(2, (i) {
+                                          final isTouched = i == touchedIndex;
+                                          final fontSize = isTouched ? 25.0 : 16.0;
+                                          final radius = isTouched ? 60.0 : 50.0;
+                                          const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+                                          switch (i) {
+                                            case 0:
+                                              return PieChartSectionData(
+                                                color: CustomColors.customContrastColor,
+                                                value: homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.qtdPedidoNSeparado],
+                                                title: '${homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.qtdPedidoNSeparado]}',
+                                                radius: radius,
+                                                titleStyle: TextStyle(
+                                                  fontSize: fontSize,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  shadows: shadows,
+                                                ),
+                                              );
+                                            case 1:
+                                              return PieChartSectionData(
+                                                color: CustomColors.customSwathColor,
+                                                value: homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.qtdPedidoSeparado],
+                                                title: '${homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.qtdPedidoSeparado]}',
+                                                radius: radius,
+                                                titleStyle: TextStyle(
+                                                  fontSize: fontSize,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  shadows: shadows,
+                                                ),
+                                              );
+                                            default:
+                                              throw Error();
+                                          }
+                                        }),
                                       ),
-                                      borderData: FlBorderData(
-                                        show: false,
-                                      ),
-                                      sectionsSpace: 0,
-                                      centerSpaceRadius: 40,
-                                      sections: List.generate(2, (i) {
-                                        final isTouched = i == touchedIndex;
-                                        final fontSize = isTouched ? 25.0 : 16.0;
-                                        final radius = isTouched ? 60.0 : 50.0;
-                                        const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-                                        switch (i) {
-                                          case 0:
-                                            return PieChartSectionData(
-                                              color: CustomColors.customContrastColor,
-                                              value: homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.qtdPedidoNSeparado],
-                                              title: '${homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.qtdPedidoNSeparado]}',
-                                              radius: radius,
-                                              titleStyle: TextStyle(
-                                                fontSize: fontSize,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                shadows: shadows,
-                                              ),
-                                            );
-                                          case 1:
-                                            return PieChartSectionData(
-                                              color: CustomColors.customSwathColor,
-                                              value: homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.qtdPedidoSeparado],
-                                              title: '${homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.qtdPedidoSeparado]}',
-                                              radius: radius,
-                                              titleStyle: TextStyle(
-                                                fontSize: fontSize,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                shadows: shadows,
-                                              ),
-                                            );
-                                          default:
-                                            throw Error();
-                                        }
-                                      }),
                                     ),
                                   ),
-                                ),
-                                Text(
-                                  'Quantidade',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                                  Text(
+                                    'Quantidade',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],

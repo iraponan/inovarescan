@@ -10,6 +10,7 @@ class UsersCronosRepository {
   Future<bool> validateUser(String user, String password) async {
     String query = QuerysCronos.selectUser(user, password);
     List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
+    sqlConnection.mssqlConnection.disconnect();
     return result.isNotEmpty;
   }
 }

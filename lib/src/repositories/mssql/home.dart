@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:inovarescan/src/controllers/company.dart';
@@ -11,10 +10,10 @@ class HomeDataCronosRepository {
   final companyController = Get.find<CompanyController>();
 
   Future<Map<String, dynamic>> getDataFromCronos({DateTime? dateIni, DateTime? dateEnd}) async {
-    log(companyController.company.toString());
     await sqlConnection.tryConnected(companyController.company);
     String query = QuerysCronos.selectPercSeparado(dateIni: dateIni, dateEnd: dateEnd);
     List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
+    sqlConnection.mssqlConnection.disconnect();
     return result.first;
   }
 }
