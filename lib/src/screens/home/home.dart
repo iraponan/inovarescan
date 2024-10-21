@@ -1,12 +1,10 @@
-import 'dart:developer';
-
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inovarescan/src/config/custom_colors.dart';
 import 'package:inovarescan/src/controllers/home.dart';
 import 'package:inovarescan/src/helpers/mssql/querys_columns.dart';
+import 'package:inovarescan/src/screens/home/components/dates_dialog.dart';
 import 'package:inovarescan/src/screens/home/components/indicator.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,78 +16,43 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int touchedIndex = -1;
+
   final homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        title: Column(
-          children: [
-            Text('Home'),
+    return Obx(() {
+      return Scaffold(
+        appBar: AppBar(
+          title: Column(
+            children: [
+              Text('Home'),
+            ],
+          ),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () {
+                homeController.refreshData();
+              },
+              icon: Icon(
+                Icons.refresh_outlined,
+              ),
+            ),
+            IconButton(
+              onPressed: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) => DatesDialog(homeController: homeController),
+                );
+              },
+              icon: Icon(
+                Icons.tune,
+              ),
+            )
           ],
         ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              homeController.refreshData();
-            },
-            icon: Icon(
-              Icons.refresh_outlined,
-            ),
-          ),
-          IconButton(
-            onPressed: () async {
-              final results = await showCalendarDatePicker2Dialog(
-                context: context,
-                config: CalendarDatePicker2WithActionButtonsConfig(
-                  calendarType: CalendarDatePicker2Type.range,
-                  animateToDisplayedMonthDate: true,
-                  centerAlignModePicker: true,
-                  weekdayLabels: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                  openedFromDialog: true,
-                ),
-                dialogSize: Size(size.width, size.height / 3),
-                useSafeArea: true,
-                builder: (context, child) {
-                  return Dialog(
-                    insetPadding: EdgeInsets.all(8),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Período de Analise',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          child ?? SizedBox(),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-              log(results.toString());
-              homeController.dateIni = results?.first ?? homeController.dateIni;
-              homeController.dateEnd = results?.last ?? homeController.dateIni;
-              homeController.refreshData();
-              log(homeController.ordersPeriod.toString());
-            },
-            icon: Icon(
-              Icons.tune,
-            ),
-          )
-        ],
-      ),
-      body: Obx(() {
-        return Center(
+        body: Center(
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -158,8 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             case 0:
                                               return PieChartSectionData(
                                                 color: CustomColors.customContrastColor,
-                                                value: homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.percNSeparado],
-                                                title: '${homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.percNSeparado]}%',
+                                                value: homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.percNSeparado],
+                                                title: '${homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.percNSeparado]}%',
                                                 radius: radius,
                                                 titleStyle: TextStyle(
                                                   fontSize: fontSize,
@@ -171,8 +134,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             case 1:
                                               return PieChartSectionData(
                                                 color: CustomColors.customSwathColor,
-                                                value: homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.percSeparado],
-                                                title: '${homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.percSeparado]}%',
+                                                value: homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.percSeparado],
+                                                title: '${homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.percSeparado]}%',
                                                 radius: radius,
                                                 titleStyle: TextStyle(
                                                   fontSize: fontSize,
@@ -226,8 +189,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             case 0:
                                               return PieChartSectionData(
                                                 color: CustomColors.customContrastColor,
-                                                value: homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.qtdPedidoNSeparado],
-                                                title: '${homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.qtdPedidoNSeparado]}',
+                                                value: homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.qtdPedidoNSeparado],
+                                                title: '${homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.qtdPedidoNSeparado]}',
                                                 radius: radius,
                                                 titleStyle: TextStyle(
                                                   fontSize: fontSize,
@@ -239,8 +202,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             case 1:
                                               return PieChartSectionData(
                                                 color: CustomColors.customSwathColor,
-                                                value: homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.qtdPedidoSeparado],
-                                                title: '${homeController.ordersPeriod.value[QuerysSelectPercSeparadoColumnsNames.qtdPedidoSeparado]}',
+                                                value: homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.qtdPedidoSeparado],
+                                                title: '${homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.qtdPedidoSeparado]}',
                                                 radius: radius,
                                                 titleStyle: TextStyle(
                                                   fontSize: fontSize,
@@ -580,8 +543,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 }

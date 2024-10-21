@@ -7,7 +7,8 @@ class CustomTextField extends StatefulWidget {
     this.controller,
     this.initialValue,
     required this.labelText,
-    required this.prefixIcon,
+    this.prefixIcon,
+    this.suffixIcon,
     this.isSecret = false,
     this.isReadOnly = false,
     this.textInputFormatter,
@@ -18,11 +19,13 @@ class CustomTextField extends StatefulWidget {
     this.onChanged,
     this.formFieldKey,
     this.enableSuggestions = true,
+    this.textAlign,
   });
 
   final TextEditingController? controller;
   final String labelText;
-  final IconData prefixIcon;
+  final IconData? prefixIcon;
+  final IconData? suffixIcon;
   final bool isSecret;
   final bool isReadOnly;
   final TextInputFormatter? textInputFormatter;
@@ -34,6 +37,7 @@ class CustomTextField extends StatefulWidget {
   final void Function(String?)? onChanged;
   final GlobalKey<FormFieldState>? formFieldKey;
   final bool enableSuggestions;
+  final TextAlign? textAlign;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -62,8 +66,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
         enableSuggestions: widget.enableSuggestions,
+        textAlign: widget.textAlign ?? TextAlign.start,
         decoration: InputDecoration(
-          prefixIcon: Icon(widget.prefixIcon),
+          prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
           suffixIcon: widget.isSecret
               ? IconButton(
                   onPressed: () {
@@ -73,7 +78,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   },
                   icon: Icon(isObscure ? Icons.visibility : Icons.visibility_off),
                 )
-              : null,
+              : widget.suffixIcon != null
+                  ? Icon(widget.suffixIcon)
+                  : null,
           labelText: widget.labelText,
           labelStyle: const TextStyle(
             color: Colors.grey,
