@@ -56,11 +56,14 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Text(
-                  '% de separações feitas no período.',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Separações Feitas No Período.',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 Column(
@@ -121,8 +124,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             case 0:
                                               return PieChartSectionData(
                                                 color: CustomColors.customContrastColor,
-                                                value: homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.percNSeparado],
-                                                title: '${homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.percNSeparado]}%',
+                                                value: homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.percNSeparado],
+                                                title: '${homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.percNSeparado] ?? 0}%',
                                                 radius: radius,
                                                 titleStyle: TextStyle(
                                                   fontSize: fontSize,
@@ -134,8 +137,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             case 1:
                                               return PieChartSectionData(
                                                 color: CustomColors.customSwathColor,
-                                                value: homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.percSeparado],
-                                                title: '${homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.percSeparado]}%',
+                                                value: homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.percSeparado],
+                                                title: '${homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.percSeparado] ?? 0}%',
                                                 radius: radius,
                                                 titleStyle: TextStyle(
                                                   fontSize: fontSize,
@@ -184,13 +187,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                           final isTouched = i == touchedIndex;
                                           final fontSize = isTouched ? 25.0 : 16.0;
                                           final radius = isTouched ? 60.0 : 50.0;
-                                          const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+                                          const shadows = [
+                                            Shadow(
+                                              color: Colors.black,
+                                              blurRadius: 2,
+                                            ),
+                                          ];
                                           switch (i) {
                                             case 0:
                                               return PieChartSectionData(
                                                 color: CustomColors.customContrastColor,
-                                                value: homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.qtdPedidoNSeparado],
-                                                title: '${homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.qtdPedidoNSeparado]}',
+                                                value: homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.qtdPedidoNSeparado],
+                                                title:
+                                                    '${homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.qtdPedidoNSeparado] == null ? 0 : homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.qtdPedidoNSeparado].toInt()}',
                                                 radius: radius,
                                                 titleStyle: TextStyle(
                                                   fontSize: fontSize,
@@ -202,8 +211,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                             case 1:
                                               return PieChartSectionData(
                                                 color: CustomColors.customSwathColor,
-                                                value: homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.qtdPedidoSeparado],
-                                                title: '${homeController.ordersPeriod[QuerysSelectPercSeparadoColumnsNames.qtdPedidoSeparado]}',
+                                                value: homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.qtdPedidoSeparado],
+                                                title:
+                                                    '${homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.qtdPedidoSeparado] == null ? 0 : homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.qtdPedidoSeparado].toInt()}',
                                                 radius: radius,
                                                 titleStyle: TextStyle(
                                                   fontSize: fontSize,
@@ -239,94 +249,91 @@ class _HomeScreenState extends State<HomeScreen> {
                   thickness: 1.5,
                 ),
                 Text(
-                  'Qtd. separada por separador.',
+                  'Qtd. Separada Por Separador.',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 AspectRatio(
-                  aspectRatio: 2.0,
+                  aspectRatio: 1,
                   child: BarChart(
                     BarChartData(
-                      barGroups: [
-                        BarChartGroupData(
-                          x: 1,
+                      barGroups: homeController.qtdPorSeparador.asMap().entries.map((e) {
+                        return BarChartGroupData(
+                          x: e.key + 1,
                           barRods: [
-                            BarChartRodData(toY: 10, color: CustomColors.customContrastColor),
+                            BarChartRodData(
+                              toY: e.value[QueryQtdPorSeparadorColumnsNames.qtdSeparada].toDouble(),
+                              color: CustomColors.customContrastColor,
+                            ),
                           ],
+                        );
+                      }).toList(),
+                      gridData: FlGridData(show: false),
+                      alignment: BarChartAlignment.spaceBetween,
+                      borderData: FlBorderData(show: false),
+                      barTouchData: BarTouchData(
+                        touchTooltipData: BarTouchTooltipData(
+                          getTooltipColor: (_) => CustomColors.customContrastColor2,
+                          tooltipHorizontalAlignment: FLHorizontalAlignment.center,
+                          getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                            return BarTooltipItem(
+                              '${homeController.qtdPorSeparador.elementAt(groupIndex)[QueryQtdPorSeparadorColumnsNames.separador]}\n',
+                              TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: (rod.toY).toInt().toString(),
+                                  style: const TextStyle(
+                                    color: Colors.white, //widget.touchedBarColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
-                        BarChartGroupData(
-                          x: 2,
-                          barRods: [
-                            BarChartRodData(toY: 8, color: CustomColors.customContrastColor),
-                          ],
-                        ),
-                        BarChartGroupData(
-                          x: 3,
-                          barRods: [
-                            BarChartRodData(toY: 2, color: CustomColors.customContrastColor),
-                          ],
-                        ),
-                        BarChartGroupData(
-                          x: 4,
-                          barRods: [
-                            BarChartRodData(toY: 9, color: CustomColors.customContrastColor),
-                          ],
-                        ),
-                        BarChartGroupData(
-                          x: 5,
-                          barRods: [
-                            BarChartRodData(toY: 6, color: CustomColors.customContrastColor),
-                          ],
-                        ),
-                      ],
+                      ),
                       titlesData: FlTitlesData(
                         show: true,
                         leftTitles: AxisTitles(
                           axisNameWidget: Text('Qtd.'),
                           sideTitles: SideTitles(
                             showTitles: true,
-                            reservedSize: 25,
+                            reservedSize: 33,
                           ),
+                        ),
+                        topTitles: AxisTitles(
+                          axisNameWidget: Text(''),
+                        ),
+                        rightTitles: AxisTitles(
+                          axisNameWidget: Text(''),
                         ),
                         bottomTitles: AxisTitles(
                           axisNameWidget: Text('Separadores'),
                           sideTitles: SideTitles(
                             showTitles: true,
-                            reservedSize: 23,
+                            reservedSize: 120,
                             getTitlesWidget: (value, meta) {
-                              Widget text;
-                              switch (value.toInt()) {
-                                case 0:
-                                  text = const Text('João');
-                                  break;
-                                case 1:
-                                  text = const Text('Pedro');
-                                  break;
-                                case 2:
-                                  text = const Text('Jair');
-                                  break;
-                                case 3:
-                                  text = const Text('Luiz');
-                                  break;
-                                case 4:
-                                  text = const Text('Maria');
-                                  break;
-                                case 5:
-                                  text = const Text('Jose');
-                                  break;
-                                case 6:
-                                  text = const Text('Sáb');
-                                  break;
-                                default:
-                                  text = const Text('');
-                                  break;
-                              }
                               return SideTitleWidget(
                                 axisSide: meta.axisSide,
-                                //space: 16,
-                                child: text,
+                                space: 8,
+                                child: RotatedBox(
+                                  quarterTurns: 1,
+                                  child: Text(
+                                    homeController.qtdPorSeparador.elementAt(value.toInt() - 1)[QueryQtdPorSeparadorColumnsNames.separador],
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
                               );
                             },
                           ),

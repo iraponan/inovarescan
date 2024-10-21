@@ -9,11 +9,19 @@ class HomeDataCronosRepository {
   SqlServerConnection sqlConnection = Get.find<SqlServerConnection>();
   final companyController = Get.find<CompanyController>();
 
-  Future<Map<String, dynamic>> getDataFromCronos({DateTime? dateIni, DateTime? dateEnd}) async {
+  Future<Map<String, dynamic>> getPercQtdSeparacoesFromCronos({DateTime? dateIni, DateTime? dateEnd}) async {
     await sqlConnection.tryConnected(companyController.company);
-    String query = QuerysCronos.selectPercSeparado(dateIni: dateIni, dateEnd: dateEnd);
+    String query = QuerysCronos.selectQtdPercSeparacoes(dateIni: dateIni, dateEnd: dateEnd);
     List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
     sqlConnection.mssqlConnection.disconnect();
     return result.first;
+  }
+
+  Future<List<dynamic>> getQtdPorSeparadorFromCronos({DateTime? dateIni, DateTime? dateEnd}) async {
+    await sqlConnection.tryConnected(companyController.company);
+    String query = QuerysCronos.selectQtdPorSeparador(dateIni: dateIni, dateEnd: dateEnd);
+    List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
+    sqlConnection.mssqlConnection.disconnect();
+    return result;
   }
 }

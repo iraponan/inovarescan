@@ -4,7 +4,9 @@ import 'package:inovarescan/src/controllers/company.dart';
 import 'package:inovarescan/src/repositories/mssql/home.dart';
 
 class HomeController extends GetxController {
-  RxMap<String, dynamic> ordersPeriod = RxMap();
+  RxMap<String, dynamic> percQtdSeparacoes = RxMap();
+  RxList<Map<String, dynamic>> qtdPorSeparador = RxList();
+
   DateTime dateIni = DateTime(DateTime.now().year, DateTime.now().month, 1);
   DateTime dateEnd = DateTime.now();
 
@@ -15,18 +17,25 @@ class HomeController extends GetxController {
   void onInit() async {
     super.onInit();
     await companyController.getCompanyFromUser(authController.user);
-    getOrdersPeriod(dateIni: dateIni, dateEnd: dateEnd);
+    refreshData();
   }
 
   final HomeDataCronosRepository _homeDataCronosRepository = HomeDataCronosRepository();
 
-  void getOrdersPeriod({DateTime? dateIni, DateTime? dateEnd}) async {
-    ordersPeriod.value = await _homeDataCronosRepository.getDataFromCronos(dateIni: dateIni, dateEnd: dateEnd);
+  void getPercQtdSeparacoes({DateTime? dateIni, DateTime? dateEnd}) async {
+    percQtdSeparacoes.value = await _homeDataCronosRepository.getPercQtdSeparacoesFromCronos(dateIni: dateIni, dateEnd: dateEnd);
     update();
   }
 
+  void getQtdPorSeparador({DateTime? dateIni, DateTime? dateEnd}) async {
+    List<dynamic> queryItems = await _homeDataCronosRepository.getQtdPorSeparadorFromCronos(dateIni: dateIni, dateEnd: dateEnd);
+    List<Map<String, dynamic>> items = queryItems.map((i) => i as Map<String, dynamic>).toList();
+    qtdPorSeparador.value = items;
+  }
+
   void refreshData() {
-    getOrdersPeriod(dateIni: dateIni, dateEnd: dateEnd);
+    getPercQtdSeparacoes(dateIni: dateIni, dateEnd: dateEnd);
+    getQtdPorSeparador(dateIni: dateIni, dateEnd: dateEnd);
     update();
   }
 }
