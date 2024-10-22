@@ -3,25 +3,36 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:inovarescan/src/controllers/company.dart';
 import 'package:inovarescan/src/helpers/mssql/querys.dart';
+import 'package:inovarescan/src/results/mssql_execute_query.dart';
 import 'package:inovarescan/src/services/sql_server_connection.dart';
 
 class HomeDataCronosRepository {
   SqlServerConnection sqlConnection = Get.find<SqlServerConnection>();
   final companyController = Get.find<CompanyController>();
 
-  Future<Map<String, dynamic>> getPercQtdSeparacoesFromCronos({DateTime? dateIni, DateTime? dateEnd}) async {
-    await sqlConnection.tryConnected(companyController.company);
+  Future<MssqlExecuteQueryResult<Map<String, dynamic>>> getPercQtdSeparacoesFromCronos({DateTime? dateIni, DateTime? dateEnd}) async {
     String query = QuerysCronos.selectQtdPercSeparacoes(dateIni: dateIni, dateEnd: dateEnd);
-    List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
-    sqlConnection.mssqlConnection.disconnect();
-    return result.first;
+    await sqlConnection.tryConnected(companyController.company);
+    if (sqlConnection.isConnected) {
+      List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
+      await sqlConnection.mssqlConnection.disconnect();
+      return MssqlExecuteQueryResult.success(result.first);
+    } else {
+      await sqlConnection.mssqlConnection.disconnect();
+      return MssqlExecuteQueryResult.error('Não foi possível conectar ao servidor do Cronos por favor tente novamente.');
+    }
   }
 
-  Future<List<dynamic>> getQtdPorSeparadorFromCronos({DateTime? dateIni, DateTime? dateEnd}) async {
-    await sqlConnection.tryConnected(companyController.company);
+  Future<MssqlExecuteQueryResult<List<dynamic>>> getQtdPorSeparadorFromCronos({DateTime? dateIni, DateTime? dateEnd}) async {
     String query = QuerysCronos.selectQtdPorSeparador(dateIni: dateIni, dateEnd: dateEnd);
-    List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
-    sqlConnection.mssqlConnection.disconnect();
-    return result;
+    await sqlConnection.tryConnected(companyController.company);
+    if (sqlConnection.isConnected) {
+      List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
+      await sqlConnection.mssqlConnection.disconnect();
+      return MssqlExecuteQueryResult.success(result);
+    } else {
+      await sqlConnection.mssqlConnection.disconnect();
+      return MssqlExecuteQueryResult.error('Não foi possível conectar ao servidor do Cronos por favor tente novamente.');
+    }
   }
 }

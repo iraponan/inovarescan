@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:inovarescan/src/controllers/auth.dart';
 import 'package:inovarescan/src/controllers/company.dart';
+import 'package:inovarescan/src/helpers/utils/utils.dart';
 import 'package:inovarescan/src/repositories/mssql/home.dart';
 
 class HomeController extends GetxController {
@@ -23,14 +24,30 @@ class HomeController extends GetxController {
   final HomeDataCronosRepository _homeDataCronosRepository = HomeDataCronosRepository();
 
   void getPercQtdSeparacoes({DateTime? dateIni, DateTime? dateEnd}) async {
-    percQtdSeparacoes.value = await _homeDataCronosRepository.getPercQtdSeparacoesFromCronos(dateIni: dateIni, dateEnd: dateEnd);
-    update();
+    final result = await _homeDataCronosRepository.getPercQtdSeparacoesFromCronos(dateIni: dateIni, dateEnd: dateEnd);
+    result.when(
+      success: (data) {
+        percQtdSeparacoes.value = data;
+        update();
+      },
+      error: (message) {
+        Utils.showToast(message: message, isError: true);
+      },
+    );
   }
 
   void getQtdPorSeparador({DateTime? dateIni, DateTime? dateEnd}) async {
-    List<dynamic> queryItems = await _homeDataCronosRepository.getQtdPorSeparadorFromCronos(dateIni: dateIni, dateEnd: dateEnd);
-    List<Map<String, dynamic>> items = queryItems.map((i) => i as Map<String, dynamic>).toList();
-    qtdPorSeparador.value = items;
+    final result = await _homeDataCronosRepository.getQtdPorSeparadorFromCronos(dateIni: dateIni, dateEnd: dateEnd);
+    result.when(
+      success: (data) {
+        List<Map<String, dynamic>> items = data.map((i) => i as Map<String, dynamic>).toList();
+        qtdPorSeparador.value = items;
+        update();
+      },
+      error: (message) {
+        Utils.showToast(message: message, isError: true);
+      },
+    );
   }
 
   void refreshData() {
