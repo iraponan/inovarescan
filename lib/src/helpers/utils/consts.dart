@@ -1,9 +1,10 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 mixin VariablesUtils {
-  static const double heightButton = 50;
-  static const double heightIconPageEmpty = 75;
-  static const Duration pageAnimationDuration = Duration(seconds: 1);
+  static final double heightButton = 50;
+  static final double heightIconPageEmpty = 75;
+  static final Duration pageAnimationDuration = Duration(seconds: 1);
+  static final List<String> dateOptions = ['Operação', 'Emissão'];
 }
 
 mixin StorageKeys {

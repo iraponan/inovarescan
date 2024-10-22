@@ -10,8 +10,8 @@ class HomeDataCronosRepository {
   SqlServerConnection sqlConnection = Get.find<SqlServerConnection>();
   final companyController = Get.find<CompanyController>();
 
-  Future<MssqlExecuteQueryResult<Map<String, dynamic>>> getPercQtdSeparacoesFromCronos({DateTime? dateIni, DateTime? dateEnd}) async {
-    String query = QuerysCronos.selectQtdPercSeparacoes(dateIni: dateIni, dateEnd: dateEnd);
+  Future<MssqlExecuteQueryResult<Map<String, dynamic>>> getPercQtdSeparacoesFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
+    String query = QuerysCronos.selectQtdPercSeparacoes(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
     await sqlConnection.tryConnected(companyController.company);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
@@ -23,8 +23,8 @@ class HomeDataCronosRepository {
     }
   }
 
-  Future<MssqlExecuteQueryResult<List<dynamic>>> getQtdPorSeparadorFromCronos({DateTime? dateIni, DateTime? dateEnd}) async {
-    String query = QuerysCronos.selectQtdPorSeparador(dateIni: dateIni, dateEnd: dateEnd);
+  Future<MssqlExecuteQueryResult<List<dynamic>>> getQtdPorSeparadorFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
+    String query = QuerysCronos.selectQtdPorSeparador(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
     await sqlConnection.tryConnected(companyController.company);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));

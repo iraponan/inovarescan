@@ -9,3 +9,8 @@ mixin QueryQtdPorSeparadorColumnsNames {
   static final String separador = 'Separador';
   static final String qtdSeparada = 'QtdSeparada';
 }
+
+mixin QueryWheryColumnsNames {
+  static final String operation = 'DataOperacao';
+  static final String dtMov = 'DtMov';
+}

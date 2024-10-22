@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inovarescan/src/config/custom_colors.dart';
 import 'package:inovarescan/src/controllers/home.dart';
+import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/screens/common_widgets/custom_text_field.dart';
 import 'package:intl/intl.dart';
 
@@ -24,6 +25,7 @@ class _DatesDialogState extends State<DatesDialog> {
   Widget build(BuildContext context) {
     dataIniController.text = DateFormat('dd/MM/yyyy').format(widget.homeController.dateIni);
     dataEndController.text = DateFormat('dd/MM/yyyy').format(widget.homeController.dateEnd);
+
     return Dialog(
       insetPadding: EdgeInsets.all(8),
       child: Padding(
@@ -38,6 +40,26 @@ class _DatesDialogState extends State<DatesDialog> {
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
+            ),
+            Row(
+              children: VariablesUtils.dateOptions.map((e) {
+                return Flexible(
+                  child: RadioListTile(
+                    title: Text(
+                      VariablesUtils.dateOptions.firstWhere((element) => element == e),
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    value: VariablesUtils.dateOptions.firstWhere((element) => element == e),
+                    groupValue: widget.homeController.typeData,
+                    activeColor: CustomColors.customSwathColor,
+                    onChanged: (v) {
+                      setState(() {
+                        widget.homeController.typeData = v ?? widget.homeController.typeData;
+                      });
+                    },
+                  ),
+                );
+              }).toList(),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
