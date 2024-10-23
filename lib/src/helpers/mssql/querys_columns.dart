@@ -8,6 +8,12 @@ mixin QuerysPercQtdSeparacoesColumnsNames {
 mixin QueryQtdPorSeparadorColumnsNames {
   static final String separador = 'Separador';
   static final String qtdSeparada = 'QtdSeparada';
+  static final String ticketAverage = 'TicketMedio';
+}
+
+mixin QueryQtdPorHoraColumnsNames {
+  static final String hour = 'HoraDaSeparacao';
+  static final String qtdSeparada = 'QtdPedidoSeparado';
 }
 
 mixin QueryWheryColumnsNames {

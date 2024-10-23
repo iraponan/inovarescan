@@ -54,6 +54,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  loading_overlay: ^0.4.2
+  loading_indicator: ^3.1.1
 
 dev_dependencies:
   flutter_test:

@@ -15,10 +15,8 @@ class HomeDataCronosRepository {
     await sqlConnection.tryConnected(companyController.company);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
-      await sqlConnection.mssqlConnection.disconnect();
       return MssqlExecuteQueryResult.success(result.first);
     } else {
-      await sqlConnection.mssqlConnection.disconnect();
       return MssqlExecuteQueryResult.error('Não foi possível conectar ao servidor do Cronos por favor tente novamente.');
     }
   }
@@ -28,11 +26,24 @@ class HomeDataCronosRepository {
     await sqlConnection.tryConnected(companyController.company);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
-      await sqlConnection.mssqlConnection.disconnect();
       return MssqlExecuteQueryResult.success(result);
     } else {
-      await sqlConnection.mssqlConnection.disconnect();
       return MssqlExecuteQueryResult.error('Não foi possível conectar ao servidor do Cronos por favor tente novamente.');
     }
+  }
+
+  Future<MssqlExecuteQueryResult<List<dynamic>>> getQtdPorHoraFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
+    String query = QuerysCronos.selectQtdSeparadaPorHora(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
+    await sqlConnection.tryConnected(companyController.company);
+    if (sqlConnection.isConnected) {
+      List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
+      return MssqlExecuteQueryResult.success(result);
+    } else {
+      return MssqlExecuteQueryResult.error('Não foi possível conectar ao servidor do Cronos por favor tente novamente.');
+    }
+  }
+
+  Future<void> disconnectMssql() async {
+    await sqlConnection.mssqlConnection.disconnect();
   }
 }

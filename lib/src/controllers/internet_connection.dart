@@ -7,6 +7,7 @@ class InternetConnectionController extends GetxController {
   Future<void> validateConnection() async {
     bool statusConnection = await InternetConnectionCheck.checkConnection();
     if (statusConnection) {
+      await Future.delayed(Duration(seconds: 1));
       Get.find<AuthController>().getCurrentUser();
     } else {
       Get.offAllNamed(PageRoutes.connectionErrorRoute);

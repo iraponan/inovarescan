@@ -7,85 +7,76 @@ import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/screens/base/components/custom_bottom_bar_item.dart';
 import 'package:inovarescan/src/screens/home/home.dart';
 
-class BaseScreen extends StatefulWidget {
+class BaseScreen extends StatelessWidget {
   const BaseScreen({super.key});
-
-  @override
-  State<BaseScreen> createState() => _BaseScreenState();
-}
-
-class _BaseScreenState extends State<BaseScreen> {
-  final navigationController = Get.find<NavigationController>();
 
   @override
   Widget build(BuildContext context) {
     Color colorSelected = Colors.white;
     Color colorUnselected = Colors.white.withAlpha(100);
 
-    return Scaffold(
-      body: PageView(
-        controller: navigationController.pageController,
-        physics: NeverScrollableScrollPhysics(),
-        children: [
-          HomeScreen(),
-          Container(
-            color: Colors.yellow,
-          ),
-          Container(
-            color: Colors.green,
-          ),
-          Container(
-            color: Colors.blue,
-          ),
-        ],
-      ),
-      bottomNavigationBar: Obx(
-        () {
-          return BottomBarDoubleBullet(
-            backgroundColor: CustomColors.customSwathColor,
-            selectedIndex: navigationController.currentIndex,
-            items: [
-              BottomBarItem(
-                iconBuilder: (color) => CustomBottomBarItem(
-                  colorSelected: colorSelected,
-                  colorUnselected: colorUnselected,
-                  iconData: Icons.home_outlined,
-                  label: 'Home',
-                  isSelected: navigationController.currentIndex == NavigationTabs.home.index,
-                ),
+    return GetX<NavigationController>(builder: (navigationController) {
+      return Scaffold(
+        body: PageView(
+          controller: navigationController.pageController,
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            HomeScreen(),
+            Container(
+              color: Colors.yellow,
+            ),
+            Container(
+              color: Colors.green,
+            ),
+            Container(
+              color: Colors.blue,
+            ),
+          ],
+        ),
+        bottomNavigationBar: BottomBarDoubleBullet(
+          backgroundColor: CustomColors.customSwathColor,
+          selectedIndex: navigationController.currentIndex,
+          items: [
+            BottomBarItem(
+              iconBuilder: (color) => CustomBottomBarItem(
+                colorSelected: colorSelected,
+                colorUnselected: colorUnselected,
+                iconData: Icons.home_outlined,
+                label: 'Home',
+                isSelected: navigationController.currentIndex == NavigationTabs.home.index,
               ),
-              BottomBarItem(
-                iconBuilder: (color) => CustomBottomBarItem(
-                  colorSelected: colorSelected,
-                  colorUnselected: colorUnselected,
-                  iconData: Icons.shopping_cart_checkout_outlined,
-                  label: 'Pedidos',
-                  isSelected: navigationController.currentIndex == NavigationTabs.movements.index,
-                ),
+            ),
+            BottomBarItem(
+              iconBuilder: (color) => CustomBottomBarItem(
+                colorSelected: colorSelected,
+                colorUnselected: colorUnselected,
+                iconData: Icons.shopping_cart_checkout_outlined,
+                label: 'Pedidos',
+                isSelected: navigationController.currentIndex == NavigationTabs.movements.index,
               ),
-              BottomBarItem(
-                iconBuilder: (color) => CustomBottomBarItem(
-                  colorSelected: colorSelected,
-                  colorUnselected: colorUnselected,
-                  iconData: Icons.inventory_2_outlined,
-                  label: 'Estoque',
-                  isSelected: navigationController.currentIndex == NavigationTabs.stock.index,
-                ),
+            ),
+            BottomBarItem(
+              iconBuilder: (color) => CustomBottomBarItem(
+                colorSelected: colorSelected,
+                colorUnselected: colorUnselected,
+                iconData: Icons.inventory_2_outlined,
+                label: 'Estoque',
+                isSelected: navigationController.currentIndex == NavigationTabs.stock.index,
               ),
-              BottomBarItem(
-                iconBuilder: (color) => CustomBottomBarItem(
-                  colorSelected: colorSelected,
-                  colorUnselected: colorUnselected,
-                  iconData: Icons.person,
-                  label: 'Perfil',
-                  isSelected: navigationController.currentIndex == NavigationTabs.profile.index,
-                ),
+            ),
+            BottomBarItem(
+              iconBuilder: (color) => CustomBottomBarItem(
+                colorSelected: colorSelected,
+                colorUnselected: colorUnselected,
+                iconData: Icons.person,
+                label: 'Perfil',
+                isSelected: navigationController.currentIndex == NavigationTabs.profile.index,
               ),
-            ],
-            onSelect: (page) => navigationController.navigatePageView(page: page),
-          );
-        },
-      ),
-    );
+            ),
+          ],
+          onSelect: (page) => navigationController.navigatePageView(page: page),
+        ),
+      );
+    });
   }
 }

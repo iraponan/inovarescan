@@ -2,12 +2,13 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:inovarescan/src/config/custom_colors.dart';
 import 'package:inovarescan/src/controllers/home.dart';
-import 'package:inovarescan/src/helpers/mssql/querys_columns.dart';
 
 class BarGraphic extends StatelessWidget {
-  const BarGraphic({super.key, required this.homeController});
+  const BarGraphic({super.key, required this.homeController, required this.keyData, required this.data});
 
   final HomeController homeController;
+  final String keyData;
+  final String data;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class BarGraphic extends StatelessWidget {
               x: e.key + 1,
               barRods: [
                 BarChartRodData(
-                  toY: e.value[QueryQtdPorSeparadorColumnsNames.qtdSeparada].toDouble(),
+                  toY: e.value[data].toDouble(),
                   color: CustomColors.customContrastColor,
                 ),
               ],
@@ -35,7 +36,7 @@ class BarGraphic extends StatelessWidget {
               tooltipHorizontalAlignment: FLHorizontalAlignment.center,
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 return BarTooltipItem(
-                  '${homeController.qtdPorSeparador.elementAt(groupIndex)[QueryQtdPorSeparadorColumnsNames.separador]}\n',
+                  '${homeController.qtdPorSeparador.elementAt(groupIndex)[keyData]}\n',
                   TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -61,7 +62,7 @@ class BarGraphic extends StatelessWidget {
               axisNameWidget: Text('Qtd.'),
               sideTitles: SideTitles(
                 showTitles: true,
-                reservedSize: 33,
+                reservedSize: 40,
               ),
             ),
             topTitles: AxisTitles(
@@ -82,7 +83,7 @@ class BarGraphic extends StatelessWidget {
                     child: RotatedBox(
                       quarterTurns: 1,
                       child: Text(
-                        homeController.qtdPorSeparador.elementAt(value.toInt() - 1)[QueryQtdPorSeparadorColumnsNames.separador],
+                        homeController.qtdPorSeparador.elementAt(value.toInt() - 1)[keyData],
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,

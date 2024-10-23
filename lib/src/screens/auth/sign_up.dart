@@ -86,7 +86,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Form(
                           key: formKey,
                           child: Obx(() {
-                            CompanyController companyController = Get.find<CompanyController>();
+                            final companyController = Get.find<CompanyController>();
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
