@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CardOrderPlaceholder extends StatelessWidget {
-  const CardOrderPlaceholder({super.key, required this.size});
-
-  final Size size;
+  const CardOrderPlaceholder({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.only(top: 8, left: 8, right: 8),
       width: size.width,
