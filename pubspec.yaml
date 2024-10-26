@@ -56,6 +56,8 @@ dependencies:
   intl: any
   loading_overlay: ^0.4.2
   loading_indicator: ^3.1.1
+  rive_animated_icon: ^2.0.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

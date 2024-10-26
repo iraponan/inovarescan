@@ -24,11 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return GetX<HomeController>(builder: (homeController) {
       return Scaffold(
         appBar: AppBar(
-          title: Column(
-            children: [
-              Text('Home'),
-            ],
-          ),
+          title: Text('Home'),
           centerTitle: true,
           actions: [
             IconButton(
@@ -47,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
               icon: Icon(
-                Icons.tune,
+                Icons.tune_outlined,
               ),
             )
           ],
@@ -135,6 +131,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     thickness: 1.5,
                   ),
                   Text(
+                    'Qtd. De Separações Por Hora.',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  LinearGraphic(homeController: homeController),
+                  Divider(
+                    color: Colors.black,
+                    indent: 10,
+                    endIndent: 10,
+                    thickness: 1.5,
+                  ),
+                  Text(
                     'Qtd. Separada Por Separador.',
                     style: TextStyle(
                       fontSize: 20,
@@ -165,19 +175,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     data: QueryQtdPorSeparadorColumnsNames.ticketAverage,
                   ),
                   Divider(
-                    color: Colors.black,
-                    indent: 10,
-                    endIndent: 10,
-                    thickness: 1.5,
+                    color: Colors.transparent,
                   ),
-                  Text(
-                    'Qtd. De Separações Por Hora.',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  LinearGraphic(homeController: homeController),
                 ],
               ),
             ),

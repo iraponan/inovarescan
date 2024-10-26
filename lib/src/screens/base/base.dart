@@ -6,6 +6,7 @@ import 'package:inovarescan/src/controllers/navigation.dart';
 import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/screens/base/components/custom_bottom_bar_item.dart';
 import 'package:inovarescan/src/screens/home/home.dart';
+import 'package:inovarescan/src/screens/order/order.dart';
 
 class BaseScreen extends StatelessWidget {
   const BaseScreen({super.key});
@@ -22,9 +23,7 @@ class BaseScreen extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           children: [
             HomeScreen(),
-            Container(
-              color: Colors.yellow,
-            ),
+            OrderScreen(),
             Container(
               color: Colors.green,
             ),
