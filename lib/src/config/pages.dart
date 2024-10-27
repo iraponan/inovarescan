@@ -4,6 +4,7 @@ import 'package:inovarescan/src/bindings/company.dart';
 import 'package:inovarescan/src/bindings/home.dart';
 import 'package:inovarescan/src/bindings/internet_connection.dart';
 import 'package:inovarescan/src/bindings/navigation.dart';
+import 'package:inovarescan/src/bindings/order.dart';
 import 'package:inovarescan/src/bindings/sql_server_connection.dart';
 import 'package:inovarescan/src/bindings/user_cronos.dart';
 import 'package:inovarescan/src/config/page_routes.dart';
@@ -56,6 +57,7 @@ mixin AppPages {
         SqlServerConnectionBinding(),
         NavigationBinding(),
         HomeBinding(),
+        OrderBidding(),
       ],
     ),
   ];

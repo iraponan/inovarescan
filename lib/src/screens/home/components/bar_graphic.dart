@@ -16,7 +16,7 @@ class BarGraphic extends StatelessWidget {
       aspectRatio: 1,
       child: BarChart(
         BarChartData(
-          barGroups: homeController.qtdPorSeparador.asMap().entries.map((e) {
+          barGroups: homeController.qttBySeparator.asMap().entries.map((e) {
             return BarChartGroupData(
               x: e.key + 1,
               barRods: [
@@ -36,7 +36,7 @@ class BarGraphic extends StatelessWidget {
               tooltipHorizontalAlignment: FLHorizontalAlignment.center,
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 return BarTooltipItem(
-                  '${homeController.qtdPorSeparador.elementAt(groupIndex)[keyData]}\n',
+                  '${homeController.qttBySeparator.elementAt(groupIndex)[keyData]}\n',
                   TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -83,7 +83,7 @@ class BarGraphic extends StatelessWidget {
                     child: RotatedBox(
                       quarterTurns: 1,
                       child: Text(
-                        homeController.qtdPorSeparador.elementAt(value.toInt() - 1)[keyData],
+                        homeController.qttBySeparator.elementAt(value.toInt() - 1)[keyData],
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,

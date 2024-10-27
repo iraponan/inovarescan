@@ -108,14 +108,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             children: [
                               PizzaGraphicSeparacao(
-                                valueNSeparado: homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.percNSeparado],
-                                valueSeparado: homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.percSeparado],
+                                valueNSeparado: homeController.percQttSeparations[QuerysPercQtdSeparacoesColumnsNames.percNSeparado],
+                                valueSeparado: homeController.percQttSeparations[QuerysPercQtdSeparacoesColumnsNames.percSeparado],
                                 isPerc: true,
                                 subtitle: 'Percentual',
                               ),
                               PizzaGraphicSeparacao(
-                                valueNSeparado: homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.qtdPedidoNSeparado],
-                                valueSeparado: homeController.percQtdSeparacoes[QuerysPercQtdSeparacoesColumnsNames.qtdPedidoSeparado],
+                                valueNSeparado: homeController.percQttSeparations[QuerysPercQtdSeparacoesColumnsNames.qtdPedidoNSeparado],
+                                valueSeparado: homeController.percQttSeparations[QuerysPercQtdSeparacoesColumnsNames.qtdPedidoSeparado],
                                 subtitle: 'Quantidade',
                               ),
                             ],

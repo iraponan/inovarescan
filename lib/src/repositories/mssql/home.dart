@@ -10,7 +10,7 @@ class HomeDataCronosRepository {
   SqlServerConnection sqlConnection = Get.find<SqlServerConnection>();
   final companyController = Get.find<CompanyController>();
 
-  Future<MssqlExecuteQueryResult<Map<String, dynamic>>> getPercQtdSeparacoesFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
+  Future<MssqlExecuteQueryResult<Map<String, dynamic>>> getPercQttSeparationsFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
     String query = QuerysCronos.selectQtdPercSeparacoes(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
     await sqlConnection.tryConnected(companyController.company);
     if (sqlConnection.isConnected) {
@@ -21,7 +21,7 @@ class HomeDataCronosRepository {
     }
   }
 
-  Future<MssqlExecuteQueryResult<List<dynamic>>> getQtdPorSeparadorFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
+  Future<MssqlExecuteQueryResult<List<dynamic>>> getQttBySeparatorFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
     String query = QuerysCronos.selectQtdPorSeparador(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
     await sqlConnection.tryConnected(companyController.company);
     if (sqlConnection.isConnected) {
@@ -32,7 +32,7 @@ class HomeDataCronosRepository {
     }
   }
 
-  Future<MssqlExecuteQueryResult<List<dynamic>>> getQtdPorHoraFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
+  Future<MssqlExecuteQueryResult<List<dynamic>>> getQttPerHourFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
     String query = QuerysCronos.selectQtdSeparadaPorHora(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
     await sqlConnection.tryConnected(companyController.company);
     if (sqlConnection.isConnected) {

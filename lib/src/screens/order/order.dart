@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:inovarescan/src/controllers/order.dart';
+import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/screens/order/components/order_custom_card.dart';
 import 'package:inovarescan/src/screens/order/components/order_placeholder.dart';
 
@@ -7,8 +10,6 @@ class OrderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Pedidos'),
@@ -28,61 +29,41 @@ class OrderScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CardOrderPlaceholder(),
-            OrderCustomCard(
-              tipoMov: 'Pré-Venda',
-              numMov: '123456789012',
-              statusMov: 'Separado',
-              dateType: 'Operação',
-              dtMov: DateTime.now(),
-              codClient: 'C01234',
-              nameClient: 'Nome do Cliente',
-              razClient: 'Razão Sócial do Cliente',
-              cpfCNPJClient: '12.345.678/0001-99',
-              vendor: 'João Maria',
-            ),
-            OrderCustomCard(
-              tipoMov: 'Pré-Venda',
-              numMov: '123456789012',
-              statusMov: 'Separado c/ Divergência',
-              dateType: 'Emissão',
-              dtMov: DateTime.now(),
-              codClient: 'C01234',
-              nameClient: 'Nome do Cliente',
-              razClient: 'Razão Sócial do Cliente',
-              cpfCNPJClient: '12.345.678/0001-99',
-              vendor: 'João Maria',
-            ),
-            OrderCustomCard(
-              tipoMov: 'Pré-Venda',
-              numMov: '123456789012',
-              statusMov: 'Finalizado',
-              dateType: 'Emissão',
-              dtMov: DateTime.now(),
-              codClient: 'C01234',
-              nameClient: 'Nome do Cliente',
-              razClient: 'Razão Sócial do Cliente',
-              cpfCNPJClient: '12.345.678/0001-99',
-              vendor: 'João Maria',
-            ),
-            OrderCustomCard(
-              tipoMov: 'Pré-Venda',
-              numMov: '123456789012',
-              statusMov: 'Em Separação',
-              dateType: 'Operação',
-              dtMov: DateTime.now(),
-              codClient: 'C01234',
-              nameClient: 'Nome do Cliente',
-              razClient: 'Razão Sócial do Cliente',
-              cpfCNPJClient: '12.345.678/0001-99',
-              vendor: 'João Maria',
-            ),
-          ],
-        ),
+      body: GetX<OrderController>(
+        builder: (orderController) {
+          return orderController.orders.isEmpty
+              ? ListView(
+                  children: List.generate(
+                    orderController.itemsPerPage,
+                    (index) => CardOrderPlaceholder(),
+                  ),
+                )
+              : ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    if ((index + 1) == orderController.orders.length && !orderController.isLastPage) {
+                      orderController.loadMoreOrders();
+                    }
+                    if (!orderController.isLoading.value) {
+                      return OrderCustomCard(
+                        tipoMov: orderController.orders[index].typeMov,
+                        numMov: orderController.orders[index].numMov,
+                        statusSepMov: orderController.orders[index].statusSepMov,
+                        dateType: VariablesUtils.dateOptions.firstWhere((d) => d == 'Operação'),
+                        dtMov: orderController.orders[index].dateMov,
+                        codClient: orderController.orders[index].codClient,
+                        nameClient: orderController.orders[index].nameClient,
+                        razClient: orderController.orders[index].razClient,
+                        cpfCNPJClient: orderController.orders[index].cpfCNPJClient,
+                        vendor: orderController.orders[index].vendor,
+                      );
+                    } else {
+                      return CardOrderPlaceholder();
+                    }
+                  },
+                  itemCount: orderController.orders.length,
+                );
+        },
       ),
     );
   }

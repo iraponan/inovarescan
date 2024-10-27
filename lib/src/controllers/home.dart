@@ -6,33 +6,36 @@ import 'package:inovarescan/src/helpers/utils/utils.dart';
 import 'package:inovarescan/src/repositories/mssql/home.dart';
 
 class HomeController extends GetxController {
-  RxMap<String, dynamic> percQtdSeparacoes = RxMap();
-  RxList<Map<String, dynamic>> qtdPorSeparador = RxList();
-  RxList<Map<String, dynamic>> qtdPorHora = RxList();
+  RxMap<String, dynamic> percQttSeparations = RxMap();
+  RxList<Map<String, dynamic>> qttBySeparator = RxList();
+  RxList<Map<String, dynamic>> qttPerHour = RxList();
   RxInt touchedIndex = RxInt(-1);
   RxBool isLoading = RxBool(false);
 
-  String typeData = VariablesUtils.dateOptions.firstWhere((element) => element == 'Operação');
-  DateTime dateIni = DateTime(DateTime.now().year, DateTime.now().month, 1);
-  DateTime dateEnd = DateTime.now();
+  late String typeData;
+  late DateTime dateIni;
+  late DateTime dateEnd;
 
   final companyController = Get.find<CompanyController>();
   final authController = Get.find<AuthController>();
 
+  final HomeDataCronosRepository _homeDataCronosRepository = HomeDataCronosRepository();
+
   @override
   void onInit() async {
     super.onInit();
+    typeData = VariablesUtils.dateOptions.firstWhere((element) => element == 'Operação');
+    dateIni = DateTime(DateTime.now().year, DateTime.now().month, 1);
+    dateEnd = DateTime.now();
     await companyController.getCompanyFromUser(authController.user);
     refreshData();
   }
 
-  final HomeDataCronosRepository _homeDataCronosRepository = HomeDataCronosRepository();
-
-  Future<void> getPercQtdSeparacoes({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
-    final result = await _homeDataCronosRepository.getPercQtdSeparacoesFromCronos(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
+  Future<void> getPercQttSeparations() async {
+    final result = await _homeDataCronosRepository.getPercQttSeparationsFromCronos(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
     result.when(
       success: (data) {
-        percQtdSeparacoes.value = data;
+        percQttSeparations.value = data;
       },
       error: (message) {
         Utils.showToast(message: message, isError: true);
@@ -40,11 +43,11 @@ class HomeController extends GetxController {
     );
   }
 
-  Future<void> getQtdPorSeparador({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
-    final result = await _homeDataCronosRepository.getQtdPorSeparadorFromCronos(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
+  Future<void> getQttBySeparator() async {
+    final result = await _homeDataCronosRepository.getQttBySeparatorFromCronos(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
     result.when(
       success: (data) {
-        qtdPorSeparador.value = data.map((i) => i as Map<String, dynamic>).toList();
+        qttBySeparator.value = data.map((i) => i as Map<String, dynamic>).toList();
       },
       error: (message) {
         Utils.showToast(message: message, isError: true);
@@ -52,11 +55,11 @@ class HomeController extends GetxController {
     );
   }
 
-  Future<void> getQtdPorHora({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
-    final result = await _homeDataCronosRepository.getQtdPorHoraFromCronos(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
+  Future<void> getQttPerHour() async {
+    final result = await _homeDataCronosRepository.getQttPerHourFromCronos(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
     result.when(
       success: (data) {
-        qtdPorHora.value = data.map((i) => i as Map<String, dynamic>).toList();
+        qttPerHour.value = data.map((i) => i as Map<String, dynamic>).toList();
       },
       error: (message) {
         Utils.showToast(message: message, isError: true);
@@ -66,9 +69,9 @@ class HomeController extends GetxController {
 
   void refreshData() async {
     isLoading.value = true;
-    await getPercQtdSeparacoes(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
-    await getQtdPorSeparador(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
-    await getQtdPorHora(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
+    await getPercQttSeparations();
+    await getQttBySeparator();
+    await getQttPerHour();
     _homeDataCronosRepository.disconnectMssql();
     isLoading.value = false;
   }

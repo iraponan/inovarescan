@@ -17,7 +17,7 @@ class LinearGraphic extends StatelessWidget {
         LineChartData(
           lineBarsData: [
             LineChartBarData(
-              spots: homeController.qtdPorHora.asMap().entries.map((e) {
+              spots: homeController.qttPerHour.asMap().entries.map((e) {
                 return FlSpot(e.value[QueryQtdPorHoraColumnsNames.hour].toDouble(), e.value[QueryQtdPorHoraColumnsNames.qtdSeparada].toDouble());
               }).toList(),
               show: true,
