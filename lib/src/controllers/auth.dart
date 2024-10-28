@@ -45,8 +45,8 @@ class AuthController extends GetxController {
     result.when(
       success: (user) {
         this.user = user;
-        if (user.active ?? false) {
-          if (user.emailVerified ?? false) {
+        if (user.active) {
+          if (user.emailVerified) {
             saveTokenAndProceedToBase();
           } else {
             Utils.showToast(message: 'E-mail do Usuário não foi validado ainda.\nPor favor valide seu e-mail e tente novamente.', isInfo: true);
@@ -65,7 +65,7 @@ class AuthController extends GetxController {
 
   Future<void> signOut() async {
     _authRepository.signOut(user: user);
-    StorageFiles.removeLocalData(key: user.token ?? '');
+    StorageFiles.removeLocalData(key: user.token);
     Get.offAllNamed(PageRoutes.signInRoute);
     user = User();
   }
@@ -109,7 +109,7 @@ class AuthController extends GetxController {
     isLoading.value = true;
 
     final result = await _authRepository.changePassword(
-      email: user.email ?? '',
+      email: user.email,
       currentPassword: currentPassword,
       newPassword: newPassword,
     );
@@ -140,7 +140,7 @@ class AuthController extends GetxController {
   }
 
   void saveTokenAndProceedToBase() async {
-    await StorageFiles.saveLocalData(key: StorageKeys.token, data: user.token!);
+    await StorageFiles.saveLocalData(key: StorageKeys.token, data: user.token);
     Get.offAllNamed(PageRoutes.baseRoute);
   }
 }

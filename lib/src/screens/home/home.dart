@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:inovarescan/src/config/custom_colors.dart';
 import 'package:inovarescan/src/controllers/home.dart';
 import 'package:inovarescan/src/helpers/mssql/querys_columns.dart';
+import 'package:inovarescan/src/screens/common_widgets/filters_dialog.dart';
 import 'package:inovarescan/src/screens/home/components/bar_graphic.dart';
-import 'package:inovarescan/src/screens/home/components/dates_dialog.dart';
 import 'package:inovarescan/src/screens/home/components/graphic_legend.dart';
 import 'package:inovarescan/src/screens/home/components/linear_graphic.dart';
 import 'package:inovarescan/src/screens/home/components/pizza_graphic_separacao.dart';
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () async {
                 await showDialog(
                   context: context,
-                  builder: (context) => DatesDialog(homeController: homeController),
+                  builder: (context) => FiltersDialog<HomeController>(controller: homeController),
                 );
               },
               icon: Icon(

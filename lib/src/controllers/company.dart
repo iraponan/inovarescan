@@ -39,7 +39,7 @@ class CompanyController extends GetxController {
         }
       },
     );
-    return company.id?.isNotEmpty ?? false;
+    return company.id.isNotEmpty;
   }
 
   Future<bool> getCompanyFromUser(User user) async {
@@ -54,6 +54,6 @@ class CompanyController extends GetxController {
         }
       },
     );
-    return company.id?.isNotEmpty ?? false;
+    return company.id.isNotEmpty;
   }
 }

@@ -105,7 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   initialValue: widget.userCronos,
                                   isReadOnly: true,
                                   onSaved: (value) {
-                                    authController.user.userCronos = value;
+                                    authController.user.userCronos = value ?? '';
                                   },
                                 ),
                                 CustomTextField(
@@ -114,7 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   textInputType: TextInputType.emailAddress,
                                   validator: Validators.emailValidator,
                                   onSaved: (value) {
-                                    authController.user.email = value;
+                                    authController.user.email = value ?? '';
                                   },
                                 ),
                                 CustomTextField(
@@ -124,7 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   validator: Validators.passwordValidator,
                                   enableSuggestions: false,
                                   onSaved: (value) {
-                                    authController.user.password = value;
+                                    authController.user.password = value ?? '';
                                   },
                                 ),
                                 CustomTextField(
@@ -133,7 +133,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   textCapitalization: TextCapitalization.words,
                                   validator: Validators.nameValidator,
                                   onSaved: (value) {
-                                    authController.user.fullName = value;
+                                    authController.user.fullName = value ?? '';
                                   },
                                 ),
                                 CustomTextField(
@@ -143,7 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   textInputType: TextInputType.number,
                                   validator: Validators.cpfValidator,
                                   onSaved: (value) {
-                                    authController.user.cpf = value;
+                                    authController.user.cpf = value ?? '';
                                   },
                                 ),
                                 CustomTextField(
@@ -153,7 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   textInputType: TextInputType.number,
                                   validator: Validators.phoneValidator,
                                   onSaved: (value) {
-                                    authController.user.phone = value;
+                                    authController.user.phone = value ?? '';
                                   },
                                 ),
                                 InkWell(
@@ -198,7 +198,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           }
                                         },
                                         onSaved: (value) {
-                                          authController.user.postCode = value;
+                                          authController.user.postCode = value ?? '';
                                         },
                                       ),
                                       CustomTextField(
@@ -207,7 +207,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         prefixIcon: Icons.pin_drop_outlined,
                                         textCapitalization: TextCapitalization.words,
                                         onSaved: (value) {
-                                          authController.user.address = value;
+                                          authController.user.address = value ?? '';
                                         },
                                       ),
                                       Row(
@@ -219,7 +219,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               prefixIcon: Icons.numbers_outlined,
                                               textInputType: TextInputType.number,
                                               onSaved: (value) {
-                                                authController.user.number = value;
+                                                authController.user.number = value ?? '';
                                               },
                                             ),
                                           ),
@@ -231,7 +231,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               prefixIcon: Icons.pin_drop_outlined,
                                               textCapitalization: TextCapitalization.words,
                                               onSaved: (value) {
-                                                authController.user.complement = value;
+                                                authController.user.complement = value ?? '';
                                               },
                                             ),
                                           )
@@ -243,7 +243,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         prefixIcon: Icons.home,
                                         textCapitalization: TextCapitalization.words,
                                         onSaved: (value) {
-                                          authController.user.neighbourhood = value;
+                                          authController.user.neighbourhood = value ?? '';
                                         },
                                       ),
                                       CustomTextField(
@@ -252,7 +252,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         prefixIcon: Icons.location_city,
                                         textCapitalization: TextCapitalization.words,
                                         onSaved: (value) {
-                                          authController.user.city = value;
+                                          authController.user.city = value ?? '';
                                         },
                                       ),
                                       CustomTextField(
@@ -261,7 +261,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         prefixIcon: Icons.map_outlined,
                                         textCapitalization: TextCapitalization.words,
                                         onSaved: (value) {
-                                          authController.user.state = value;
+                                          authController.user.state = value ?? '';
                                         },
                                       ),
                                     ],
@@ -287,7 +287,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                     );
                                                     if (result ?? false) {
                                                       authController.user.emailVerified = true;
-                                                      authController.updateEmailValidation(authController.user.email!, true);
+                                                      authController.updateEmailValidation(authController.user.email, true);
                                                       Utils.showToast(
                                                           message: 'Aguarde o administrador da empresa aceitar seu usuário e depois tente fazer o login.', isInfo: true);
                                                     }

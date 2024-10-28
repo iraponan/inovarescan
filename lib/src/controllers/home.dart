@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:inovarescan/src/controllers/auth.dart';
 import 'package:inovarescan/src/controllers/company.dart';
+import 'package:inovarescan/src/controllers/user_cronos.dart';
 import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/helpers/utils/utils.dart';
 import 'package:inovarescan/src/repositories/mssql/home.dart';
@@ -18,6 +19,7 @@ class HomeController extends GetxController {
 
   final companyController = Get.find<CompanyController>();
   final authController = Get.find<AuthController>();
+  final userCronosController = Get.find<UserCronosController>();
 
   final HomeDataCronosRepository _homeDataCronosRepository = HomeDataCronosRepository();
 
@@ -28,6 +30,7 @@ class HomeController extends GetxController {
     dateIni = DateTime(DateTime.now().year, DateTime.now().month, 1);
     dateEnd = DateTime.now();
     await companyController.getCompanyFromUser(authController.user);
+    authController.user.accessCompanies = await userCronosController.getUserAccessCompanies(user: authController.user.userCronos);
     refreshData();
   }
 
@@ -72,7 +75,7 @@ class HomeController extends GetxController {
     await getPercQttSeparations();
     await getQttBySeparator();
     await getQttPerHour();
-    _homeDataCronosRepository.disconnectMssql();
+    await _homeDataCronosRepository.disconnectMssql();
     isLoading.value = false;
   }
 }

@@ -11,7 +11,7 @@ class HomeDataCronosRepository {
   final companyController = Get.find<CompanyController>();
 
   Future<MssqlExecuteQueryResult<Map<String, dynamic>>> getPercQttSeparationsFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
-    String query = QuerysCronos.selectQtdPercSeparacoes(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
+    String query = QuerysCronos.selectPercQttSeparations(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, cgc: companyController.company.cnpj);
     await sqlConnection.tryConnected(companyController.company);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
@@ -22,7 +22,7 @@ class HomeDataCronosRepository {
   }
 
   Future<MssqlExecuteQueryResult<List<dynamic>>> getQttBySeparatorFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
-    String query = QuerysCronos.selectQtdPorSeparador(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
+    String query = QuerysCronos.selectQttBySeparator(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, cgc: companyController.company.cnpj);
     await sqlConnection.tryConnected(companyController.company);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
@@ -33,7 +33,7 @@ class HomeDataCronosRepository {
   }
 
   Future<MssqlExecuteQueryResult<List<dynamic>>> getQttPerHourFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
-    String query = QuerysCronos.selectQtdSeparadaPorHora(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd);
+    String query = QuerysCronos.selectQttPerHour(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, cgc: companyController.company.cnpj);
     await sqlConnection.tryConnected(companyController.company);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));

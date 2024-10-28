@@ -29,6 +29,10 @@ mixin QueryOrdersColumnsNames {
   static const String vendor = 'Vendedor';
 }
 
+mixin QueryUserAccessCompaniesColumnsNames {
+  static const String idCompany = 'CodFilial';
+}
+
 mixin QueryWheryColumnsNames {
   static const String operation = 'DataOperacao';
   static const String dtMov = 'DtMov';

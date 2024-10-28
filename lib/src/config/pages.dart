@@ -21,7 +21,9 @@ mixin AppPages {
       page: () => const InitScreen(),
       bindings: [
         InternetConnectionBinding(),
+        SqlServerConnectionBinding(),
         AuthBinding(),
+        CompanyBinding(),
       ],
     ),
     GetPage(
@@ -32,9 +34,9 @@ mixin AppPages {
       name: PageRoutes.signInRoute,
       page: () => const SignInScreen(),
       bindings: [
+        SqlServerConnectionBinding(),
         AuthBinding(),
         CompanyBinding(),
-        SqlServerConnectionBinding(),
         UserCronosBinding(),
       ],
     ),
@@ -44,17 +46,19 @@ mixin AppPages {
         userCronos: Get.parameters['userCronos'] ?? '',
       ),
       bindings: [
+        SqlServerConnectionBinding(),
         CompanyBinding(),
         AuthBinding(),
-        SqlServerConnectionBinding(),
       ],
     ),
     GetPage(
       name: PageRoutes.baseRoute,
       page: () => const BaseScreen(),
       bindings: [
+        SqlServerConnectionBinding(),
         CompanyBinding(),
         SqlServerConnectionBinding(),
+        UserCronosBinding(),
         NavigationBinding(),
         HomeBinding(),
         OrderBidding(),
