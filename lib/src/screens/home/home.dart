@@ -39,7 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () async {
                 await showDialog(
                   context: context,
-                  builder: (context) => FiltersDialog<HomeController>(controller: homeController),
+                  builder: (context) => FiltersDialog(
+                    isHome: true,
+                  ),
                 );
               },
               icon: Icon(

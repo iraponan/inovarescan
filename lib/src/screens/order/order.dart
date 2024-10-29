@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inovarescan/src/controllers/order.dart';
 import 'package:inovarescan/src/helpers/utils/consts.dart';
+import 'package:inovarescan/src/screens/common_widgets/filters_dialog.dart';
 import 'package:inovarescan/src/screens/order/components/order_custom_card.dart';
 import 'package:inovarescan/src/screens/order/components/order_placeholder.dart';
 
@@ -15,18 +16,31 @@ class OrderScreen extends StatelessWidget {
         title: Text('Pedidos'),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.refresh_outlined,
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.tune_outlined,
-            ),
-          ),
+          GetBuilder<OrderController>(builder: (orderController) {
+            return IconButton(
+              onPressed: () {
+                orderController.refreshData();
+              },
+              icon: Icon(
+                Icons.refresh_outlined,
+              ),
+            );
+          }),
+          GetBuilder<OrderController>(builder: (orderController) {
+            return IconButton(
+              onPressed: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) => FiltersDialog(
+                    isOrder: true,
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.tune_outlined,
+              ),
+            );
+          }),
         ],
       ),
       body: Obx(

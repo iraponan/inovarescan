@@ -3,32 +3,39 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inovarescan/src/config/custom_colors.dart';
+import 'package:inovarescan/src/controllers/filter_data.dart';
+import 'package:inovarescan/src/controllers/home.dart';
+import 'package:inovarescan/src/controllers/order.dart';
 import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/screens/common_widgets/custom_text_field.dart';
 import 'package:intl/intl.dart';
 
-class FiltersDialog<T> extends StatefulWidget {
+class FiltersDialog extends StatefulWidget {
   const FiltersDialog({
     super.key,
-    required this.controller,
+    this.isHome = false,
     this.isOrder = false,
+    this.isStoke = false,
   });
 
-  final T controller;
+  final bool isHome;
   final bool isOrder;
+  final bool isStoke;
 
   @override
   State<FiltersDialog> createState() => _FiltersDialogState();
 }
 
 class _FiltersDialogState extends State<FiltersDialog> {
+  final filterDataController = Get.find<FilterDataController>();
+
   final dataIniController = TextEditingController();
   final dataEndController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    dataIniController.text = DateFormat('dd/MM/yyyy').format(widget.controller.dateIni);
-    dataEndController.text = DateFormat('dd/MM/yyyy').format(widget.controller.dateEnd);
+    dataIniController.text = DateFormat('dd/MM/yyyy').format(filterDataController.dateIni.value);
+    dataEndController.text = DateFormat('dd/MM/yyyy').format(filterDataController.dateEnd.value);
 
     return Dialog(
       insetPadding: EdgeInsets.all(8),
@@ -54,11 +61,11 @@ class _FiltersDialogState extends State<FiltersDialog> {
                       style: TextStyle(fontWeight: FontWeight.w500),
                     ),
                     value: VariablesUtils.dateOptions.firstWhere((element) => element == e),
-                    groupValue: widget.controller.typeData,
+                    groupValue: filterDataController.typeData.value,
                     activeColor: CustomColors.customSwathColor,
                     onChanged: (v) {
                       setState(() {
-                        widget.controller.typeData = v ?? widget.controller.typeData;
+                        filterDataController.typeData.value = v ?? filterDataController.typeData.value;
                       });
                     },
                   ),
@@ -106,12 +113,15 @@ class _FiltersDialogState extends State<FiltersDialog> {
                 rangeBidirectional: true,
               ),
               onValueChanged: (dates) {
-                widget.controller.dateIni = dates.first;
-                widget.controller.dateEnd = dates.last;
-                dataIniController.text = DateFormat('dd/MM/yyyy').format(widget.controller.dateIni);
-                dataEndController.text = DateFormat('dd/MM/yyyy').format(widget.controller.dateEnd);
+                filterDataController.dateIni.value = dates.first;
+                filterDataController.dateEnd.value = dates.last;
+                dataIniController.text = DateFormat('dd/MM/yyyy').format(filterDataController.dateIni.value);
+                dataEndController.text = DateFormat('dd/MM/yyyy').format(filterDataController.dateEnd.value);
               },
-              value: [widget.controller.dateIni, widget.controller.dateEnd],
+              value: [
+                filterDataController.dateIni.value,
+                filterDataController.dateEnd.value,
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
@@ -128,8 +138,13 @@ class _FiltersDialogState extends State<FiltersDialog> {
                   VerticalDivider(),
                   ElevatedButton(
                     onPressed: () {
+                      if (widget.isHome) {
+                        Get.find<HomeController>().refreshData();
+                      }
+                      if (widget.isOrder) {
+                        Get.find<OrderController>().refreshData();
+                      }
                       Get.back();
-                      widget.controller.refreshData();
                     },
                     child: Text('Aplicar'),
                   ),

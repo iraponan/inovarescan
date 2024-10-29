@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:inovarescan/src/helpers/utils/consts.dart';
+import 'package:inovarescan/src/controllers/filter_data.dart';
 import 'package:inovarescan/src/models/order.dart';
 import 'package:inovarescan/src/repositories/mssql/order.dart';
 
@@ -9,11 +9,11 @@ class OrderController extends GetxController {
   RxList<Order> orders = RxList([]);
   RxBool isLoading = RxBool(false);
 
-  String typeData = VariablesUtils.dateOptions.firstWhere((element) => element == 'Operação');
-  DateTime dateIni = DateTime(DateTime.now().year, DateTime.now().month, 1);
-  DateTime dateEnd = DateTime.now();
+  final filterDataController = Get.find<FilterDataController>();
+
+  final int itemsPerPage = 5;
+
   int page = 0;
-  int itemsPerPage = 5;
   bool isLastPage = false;
 
   final OrderRepository _orderRepository = OrderRepository();
@@ -26,7 +26,13 @@ class OrderController extends GetxController {
 
   Future<void> getOrders() async {
     await Future.delayed(Duration(seconds: 2));
-    final result = await _orderRepository.getOrders(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, page: page, itemsPerPage: itemsPerPage);
+    final result = await _orderRepository.getOrders(
+      typeData: filterDataController.typeData.value,
+      dateIni: filterDataController.dateIni.value,
+      dateEnd: filterDataController.dateEnd.value,
+      page: page,
+      itemsPerPage: itemsPerPage,
+    );
     result.when(
       success: (data) {
         for (var order in data) {
@@ -45,5 +51,13 @@ class OrderController extends GetxController {
     isLoading.value = true;
     await getOrders();
     isLoading.value = false;
+  }
+
+  void refreshData() async {
+    orders.value = [];
+    isLoading.value = false;
+    isLastPage = false;
+    page = 0;
+    await getOrders();
   }
 }

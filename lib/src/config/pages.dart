@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:inovarescan/src/bindings/auth.dart';
 import 'package:inovarescan/src/bindings/company.dart';
+import 'package:inovarescan/src/bindings/filter_data.dart';
 import 'package:inovarescan/src/bindings/home.dart';
 import 'package:inovarescan/src/bindings/internet_connection.dart';
 import 'package:inovarescan/src/bindings/navigation.dart';
@@ -60,6 +61,7 @@ mixin AppPages {
         SqlServerConnectionBinding(),
         UserCronosBinding(),
         NavigationBinding(),
+        FilterDataBinding(),
         HomeBinding(),
         OrderBidding(),
       ],
