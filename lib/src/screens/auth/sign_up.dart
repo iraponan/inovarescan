@@ -277,6 +277,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               FocusScope.of(context).unfocus();
                                               formKey.currentState!.save();
                                               if (await authController.signUp()) {
+                                                authController.update();
                                                 Get.offAllNamed(PageRoutes.signInRoute);
                                                 final int codeValid = await ValidateEmail.sendEmailValidator(authController.user.email);
                                                 if (codeValid != 0) {

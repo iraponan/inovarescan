@@ -9,24 +9,18 @@ class OrderController extends GetxController {
   RxList<Order> orders = RxList([]);
   RxBool isLoading = RxBool(false);
 
-  late String typeData;
-  late DateTime dateIni;
-  late DateTime dateEnd;
-  late int page;
-  late int itemsPerPage;
-  late bool isLastPage;
+  String typeData = VariablesUtils.dateOptions.firstWhere((element) => element == 'Operação');
+  DateTime dateIni = DateTime(DateTime.now().year, DateTime.now().month, 1);
+  DateTime dateEnd = DateTime.now();
+  int page = 0;
+  int itemsPerPage = 5;
+  bool isLastPage = false;
 
   final OrderRepository _orderRepository = OrderRepository();
 
   @override
   void onInit() async {
     super.onInit();
-    typeData = VariablesUtils.dateOptions.firstWhere((element) => element == 'Operação');
-    dateIni = DateTime(DateTime.now().year, DateTime.now().month, 1);
-    dateEnd = DateTime.now();
-    page = 0;
-    itemsPerPage = 5;
-    isLastPage = false;
     await getOrders();
   }
 

@@ -29,8 +29,9 @@ class OrderScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: GetX<OrderController>(
-        builder: (orderController) {
+      body: Obx(
+        () {
+          final orderController = Get.find<OrderController>();
           return orderController.orders.isEmpty
               ? ListView(
                   children: List.generate(

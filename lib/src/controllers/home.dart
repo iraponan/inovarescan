@@ -13,9 +13,9 @@ class HomeController extends GetxController {
   RxInt touchedIndex = RxInt(-1);
   RxBool isLoading = RxBool(false);
 
-  late String typeData;
-  late DateTime dateIni;
-  late DateTime dateEnd;
+  String typeData = VariablesUtils.dateOptions.firstWhere((element) => element == 'Operação');
+  DateTime dateIni = DateTime(DateTime.now().year, DateTime.now().month, 1);
+  DateTime dateEnd = DateTime.now();
 
   final companyController = Get.find<CompanyController>();
   final authController = Get.find<AuthController>();
@@ -26,9 +26,6 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    typeData = VariablesUtils.dateOptions.firstWhere((element) => element == 'Operação');
-    dateIni = DateTime(DateTime.now().year, DateTime.now().month, 1);
-    dateEnd = DateTime.now();
     await companyController.getCompanyFromUser(authController.user);
     authController.user.accessCompanies = await userCronosController.getUserAccessCompanies(user: authController.user.userCronos);
     refreshData();
@@ -72,10 +69,14 @@ class HomeController extends GetxController {
 
   void refreshData() async {
     isLoading.value = true;
+    percQttSeparations.value = {};
+    qttBySeparator.value = [];
+    qttPerHour.value = [];
     await getPercQttSeparations();
     await getQttBySeparator();
     await getQttPerHour();
     await _homeDataCronosRepository.disconnectMssql();
+    update();
     isLoading.value = false;
   }
 }

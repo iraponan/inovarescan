@@ -17,7 +17,6 @@ class CompanyController extends GetxController {
     result.when(
       success: (companies) {
         this.companies = companies;
-        update();
       },
       error: (message) {
         if (message.isNotEmpty) {
