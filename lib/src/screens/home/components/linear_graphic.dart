@@ -53,6 +53,7 @@ class LinearGraphic extends StatelessWidget {
           ],
           gridData: FlGridData(show: false),
           borderData: FlBorderData(show: false),
+          minY: 0,
           titlesData: FlTitlesData(
             show: true,
             topTitles: AxisTitles(
@@ -67,6 +68,7 @@ class LinearGraphic extends StatelessWidget {
               sideTitles: SideTitles(
                 showTitles: true,
                 reservedSize: 23,
+                interval: 1,
               ),
             ),
             leftTitles: AxisTitles(

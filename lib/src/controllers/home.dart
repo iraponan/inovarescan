@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:inovarescan/src/controllers/auth.dart';
-import 'package:inovarescan/src/controllers/company.dart';
+import 'package:inovarescan/src/controllers/connection.dart';
 import 'package:inovarescan/src/controllers/filter_data.dart';
 import 'package:inovarescan/src/controllers/user_cronos.dart';
 import 'package:inovarescan/src/helpers/utils/utils.dart';
@@ -15,7 +15,7 @@ class HomeController extends GetxController {
 
   final filterDataController = Get.find<FilterDataController>();
 
-  final companyController = Get.find<CompanyController>();
+  final companyController = Get.find<ConnectionController>();
   final authController = Get.find<AuthController>();
   final userCronosController = Get.find<UserCronosController>();
 
@@ -26,6 +26,7 @@ class HomeController extends GetxController {
     super.onInit();
     await companyController.getCompanyFromUser(authController.user);
     authController.user.accessCompanies = await userCronosController.getUserAccessCompanies(user: authController.user.userCronos);
+    filterDataController.setCompaniesOptions(companies: authController.user.accessCompanies ?? []);
     refreshData();
   }
 
@@ -34,6 +35,7 @@ class HomeController extends GetxController {
       typeData: filterDataController.typeData.value,
       dateIni: filterDataController.dateIni.value,
       dateEnd: filterDataController.dateEnd.value,
+      companies: filterDataController.selectedOptions,
     );
     result.when(
       success: (data) {
@@ -50,6 +52,7 @@ class HomeController extends GetxController {
       typeData: filterDataController.typeData.value,
       dateIni: filterDataController.dateIni.value,
       dateEnd: filterDataController.dateEnd.value,
+      companies: filterDataController.selectedOptions,
     );
     result.when(
       success: (data) {
@@ -66,6 +69,7 @@ class HomeController extends GetxController {
       typeData: filterDataController.typeData.value,
       dateIni: filterDataController.dateIni.value,
       dateEnd: filterDataController.dateEnd.value,
+      companies: filterDataController.selectedOptions,
     );
     result.when(
       success: (data) {

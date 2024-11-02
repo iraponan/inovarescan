@@ -1,69 +1,69 @@
 import 'package:inovarescan/src/helpers/paser_server/column_tables.dart';
 import 'package:inovarescan/src/helpers/paser_server/tables.dart';
 import 'package:inovarescan/src/helpers/utils/parse_erros.dart';
-import 'package:inovarescan/src/models/company.dart';
+import 'package:inovarescan/src/models/connection.dart';
 import 'package:inovarescan/src/models/user.dart';
-import 'package:inovarescan/src/results/company.dart';
+import 'package:inovarescan/src/results/connection.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
-class CompanyRepository {
-  Future<CompanyResult<List<Company>>> getAllCompanies() async {
+class ConnectionRepository {
+  Future<ConnectionResult<List<Connection>>> getAllConnectionCompanies() async {
     final QueryBuilder queryBuilder = QueryBuilder(ParseObject(TablesNamesParseServer.company))
       ..whereEqualTo(
-        CompanyColumnNamesParseServer.active,
+        CompanyConnectionColumnNamesParseServer.active,
         true,
       )
-      ..orderByAscending(CompanyColumnNamesParseServer.name);
+      ..orderByAscending(CompanyConnectionColumnNamesParseServer.name);
 
     final response = await queryBuilder.query();
 
     if (response.success) {
-      List<Company> companies = response.results?.map((c) => Company.fromParserObject(c)).toList() ?? [];
-      return CompanyResult<List<Company>>.success(companies);
+      List<Connection> companies = response.results?.map((c) => Connection.fromParserObject(c)).toList() ?? [];
+      return ConnectionResult<List<Connection>>.success(companies);
     } else {
-      return CompanyResult.error(
+      return ConnectionResult.error(
         ParseErrors.getDescription(response.error?.code ?? -1),
       );
     }
   }
 
-  Future<CompanyResult<Company>> getCompanyFromCNPJ(String cnpj) async {
+  Future<ConnectionResult<Connection>> getCompanyFromCNPJ(String cnpj) async {
     final QueryBuilder queryBuilder = QueryBuilder(ParseObject(TablesNamesParseServer.company))
       ..whereEqualTo(
-        CompanyColumnNamesParseServer.cnpj,
+        CompanyConnectionColumnNamesParseServer.cnpj,
         cnpj,
       );
 
     final response = await queryBuilder.query();
 
     if (response.success && response.results != null) {
-      return CompanyResult<Company>.success(Company.fromParserObject(response.results?.first));
+      return ConnectionResult<Connection>.success(Connection.fromParserObject(response.results?.first));
     }
     if (response.results == null) {
-      return CompanyResult.error('');
+      return ConnectionResult.error('');
     } else {
-      return CompanyResult.error(
+      return ConnectionResult.error(
         ParseErrors.getDescription(response.error?.code ?? -1),
       );
     }
   }
 
-  Future<CompanyResult<Company>> getCompanyFromUser(User user) async {
+  Future<ConnectionResult<Connection>> getCompanyFromUser(User user) async {
     final QueryBuilder queryBuilder = QueryBuilder(ParseObject(TablesNamesParseServer.company))
       ..whereEqualTo(
-        CompanyColumnNamesParseServer.id,
-        user.company?.id,
+        CompanyConnectionColumnNamesParseServer.id,
+        user.connection?.id,
       );
 
     final response = await queryBuilder.query();
 
     if (response.success && response.results != null) {
-      return CompanyResult<Company>.success(Company.fromParserObject(response.results?.first));
+      return ConnectionResult<Connection>.success(Connection.fromParserObject(response.results?.first));
     }
     if (response.results == null) {
-      return CompanyResult.error('');
+      return ConnectionResult.error('');
     } else {
-      return CompanyResult.error(
+      return ConnectionResult.error(
         ParseErrors.getDescription(response.error?.code ?? -1),
       );
     }

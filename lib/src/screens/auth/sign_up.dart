@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:inovarescan/src/config/custom_colors.dart';
 import 'package:inovarescan/src/config/page_routes.dart';
 import 'package:inovarescan/src/controllers/auth.dart';
-import 'package:inovarescan/src/controllers/company.dart';
+import 'package:inovarescan/src/controllers/connection.dart';
 import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/helpers/utils/utils.dart';
 import 'package:inovarescan/src/screens/auth/components/validate_email_dialog.dart';
@@ -86,17 +86,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Form(
                           key: formKey,
                           child: Obx(() {
-                            final companyController = Get.find<CompanyController>();
+                            final companyController = Get.find<ConnectionController>();
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 CustomTextField(
                                   labelText: 'Empresa',
                                   prefixIcon: Icons.contacts_outlined,
-                                  initialValue: companyController.company.name,
+                                  initialValue: companyController.connection.name,
                                   isReadOnly: true,
                                   onSaved: (value) {
-                                    authController.user.company = companyController.company;
+                                    authController.user.connection = companyController.connection;
                                   },
                                 ),
                                 CustomTextField(

@@ -1,5 +1,5 @@
 import 'package:inovarescan/src/helpers/paser_server/column_tables.dart';
-import 'package:inovarescan/src/models/company.dart';
+import 'package:inovarescan/src/models/connection.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 class User {
@@ -11,7 +11,7 @@ class User {
   String userCronos;
   String cpf;
   String phone;
-  Company? company;
+  Connection? connection;
   bool active;
   DateTime? updateAt;
   DateTime? createAt;
@@ -23,7 +23,7 @@ class User {
   String city;
   String state;
   String postCode;
-  List<String>? accessCompanies;
+  List<Map<String, dynamic>>? accessCompanies;
 
   User({
     this.id = '',
@@ -34,7 +34,7 @@ class User {
     this.userCronos = '',
     this.cpf = '',
     this.phone = '',
-    this.company,
+    this.connection,
     this.active = false,
     this.updateAt,
     this.createAt,
@@ -57,7 +57,7 @@ class User {
       userCronos: parseUser.get<String>(UserColumnNamesParseServer.userCronos) ?? '',
       cpf: parseUser.get<String>(UserColumnNamesParseServer.cpf) ?? '',
       phone: parseUser.get<String>(UserColumnNamesParseServer.phone) ?? '',
-      company: Company.fromParserObject(parseUser.get(UserColumnNamesParseServer.company)),
+      connection: Connection.fromParserObject(parseUser.get(UserColumnNamesParseServer.company)),
       active: parseUser.get<bool>(UserColumnNamesParseServer.active) ?? false,
       updateAt: parseUser.get<DateTime>(UserColumnNamesParseServer.updateAt),
       createAt: parseUser.get<DateTime>(UserColumnNamesParseServer.createAt),
@@ -81,7 +81,7 @@ class User {
       userCronos: object.get<String>(UserColumnNamesParseServer.userCronos) ?? '',
       cpf: object.get<String>(UserColumnNamesParseServer.cpf) ?? '',
       phone: object.get<String>(UserColumnNamesParseServer.phone) ?? '',
-      company: Company.fromParserObject(object.get(UserColumnNamesParseServer.company)),
+      connection: Connection.fromParserObject(object.get(UserColumnNamesParseServer.company)),
       active: object.get<bool>(UserColumnNamesParseServer.active) ?? false,
       updateAt: object.get<DateTime>(UserColumnNamesParseServer.updateAt),
       createAt: object.get<DateTime>(UserColumnNamesParseServer.createAt),
@@ -98,7 +98,7 @@ class User {
 
   @override
   String toString() {
-    return 'User{id: $id, token: $token, fullName: $fullName, password: $password, email: $email, userCronos: $userCronos, cpf: $cpf, phone: $phone, company: $company,'
+    return 'User{id: $id, token: $token, fullName: $fullName, password: $password, email: $email, userCronos: $userCronos, cpf: $cpf, phone: $phone, company: $connection,'
         ' active: $active, updateAt: $updateAt, createAt: $createAt, emailVerified: $emailVerified, address: $address, number: $number, neighbourhood: $neighbourhood,'
         ' complement: $complement, city: $city, state: $state, postCode: $postCode, accessCompanies: $accessCompanies}';
   }

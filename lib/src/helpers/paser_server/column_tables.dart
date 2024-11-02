@@ -21,7 +21,7 @@ mixin UserColumnNamesParseServer {
   static const String postCode = 'CEP';
 }
 
-mixin CompanyColumnNamesParseServer {
+mixin CompanyConnectionColumnNamesParseServer {
   static const String id = 'objectId';
   static const String name = 'nome';
   static const String cnpj = 'CGC';

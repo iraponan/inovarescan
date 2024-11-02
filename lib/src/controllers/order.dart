@@ -32,6 +32,7 @@ class OrderController extends GetxController {
       dateEnd: filterDataController.dateEnd.value,
       page: page,
       itemsPerPage: itemsPerPage,
+      companies: filterDataController.selectedOptions,
     );
     result.when(
       success: (data) {

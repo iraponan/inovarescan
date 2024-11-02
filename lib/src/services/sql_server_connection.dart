@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:inovarescan/src/helpers/utils/utils.dart';
-import 'package:inovarescan/src/models/company.dart';
+import 'package:inovarescan/src/models/connection.dart';
 import 'package:mssql_connection/mssql_connection.dart';
 
 class SqlServerConnection extends GetxService {
@@ -8,7 +8,7 @@ class SqlServerConnection extends GetxService {
 
   bool get isConnected => mssqlConnection.isConnected;
 
-  Future<void> tryConnected(Company company) async {
+  Future<void> tryConnected(Connection company) async {
     if (company.id.isNotEmpty) {
       try {
         await mssqlConnection.connect(

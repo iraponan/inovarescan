@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:inovarescan/src/config/custom_colors.dart';
 import 'package:inovarescan/src/config/page_routes.dart';
 import 'package:inovarescan/src/controllers/auth.dart';
-import 'package:inovarescan/src/controllers/company.dart';
+import 'package:inovarescan/src/controllers/connection.dart';
 import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/helpers/utils/utils.dart';
 import 'package:inovarescan/src/screens/auth/components/forgot_password_dialog.dart';
@@ -214,7 +214,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       // # Criar Conta #
                       SizedBox(
                         height: 50,
-                        child: GetBuilder<CompanyController>(builder: (controller) {
+                        child: GetBuilder<ConnectionController>(builder: (controller) {
                           return OutlinedButton(
                             onPressed: () async {
                               final bool? result = await showDialog(
@@ -223,7 +223,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               );
                               if (result ?? false) {
                                 SqlServerConnection sqlConnection = Get.find<SqlServerConnection>();
-                                await sqlConnection.tryConnected(controller.company);
+                                await sqlConnection.tryConnected(controller.connection);
                                 if (sqlConnection.isConnected) {
                                   if (context.mounted) {
                                     final String? result = await showDialog(
@@ -244,7 +244,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     Utils.showToast(message: 'Ocorreu um erro na aplicação! Por favor tente novamente...', isError: true);
                                   }
                                 } else {
-                                  Utils.showToast(message: 'Não foi possível conectar a base de dados da empresa ${controller.company.name}.', isError: true);
+                                  Utils.showToast(message: 'Não foi possível conectar a base de dados da empresa ${controller.connection.name}.', isError: true);
                                 }
                               } else {
                                 Utils.showToast(message: 'Faça login ou crie uma nova conta.', isInfo: true);

@@ -31,6 +31,7 @@ mixin QueryOrdersColumnsNames {
 
 mixin QueryUserAccessCompaniesColumnsNames {
   static const String idCompany = 'CodFilial';
+  static const String nameCompany = 'NomeFilial';
 }
 
 mixin QueryWheryColumnsNames {

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:inovarescan/src/controllers/company.dart';
+import 'package:inovarescan/src/controllers/connection.dart';
 import 'package:inovarescan/src/helpers/paser_server/column_tables.dart';
 import 'package:inovarescan/src/helpers/paser_server/tables.dart';
 import 'package:inovarescan/src/helpers/utils/parse_erros.dart';
@@ -29,8 +29,8 @@ class AuthRepository {
       UserColumnNamesParseServer.company,
       ParseObject(TablesNamesParseServer.company)
         ..set(
-          CompanyColumnNamesParseServer.id,
-          user.company?.id,
+          CompanyConnectionColumnNamesParseServer.id,
+          user.connection?.id,
         ),
     );
     parseUser.set<String?>(UserColumnNamesParseServer.userCronos, user.userCronos);
@@ -124,12 +124,12 @@ class AuthRepository {
   }
 
   Future<UserProfileResult> validateUserCronosExists(String username) async {
-    final companyController = Get.find<CompanyController>();
+    final companyController = Get.find<ConnectionController>();
     final queryBuilder = QueryBuilder(ParseObject(TablesNamesParseServer.user))
       ..whereEqualTo(UserColumnNamesParseServer.userCronos, username)
       ..whereEqualTo(
         UserColumnNamesParseServer.company,
-        ParseObject(TablesNamesParseServer.company)..set(CompanyColumnNamesParseServer.id, companyController.company.id),
+        ParseObject(TablesNamesParseServer.company)..set(CompanyConnectionColumnNamesParseServer.id, companyController.connection.id),
       );
 
     final response = await queryBuilder.query();

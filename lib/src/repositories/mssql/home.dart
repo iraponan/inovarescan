@@ -1,18 +1,19 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:inovarescan/src/controllers/company.dart';
+import 'package:inovarescan/src/controllers/connection.dart';
 import 'package:inovarescan/src/helpers/mssql/querys.dart';
 import 'package:inovarescan/src/results/mssql_execute_query.dart';
 import 'package:inovarescan/src/services/sql_server_connection.dart';
 
 class HomeDataCronosRepository {
   SqlServerConnection sqlConnection = Get.find<SqlServerConnection>();
-  final companyController = Get.find<CompanyController>();
+  final connectionController = Get.find<ConnectionController>();
 
-  Future<MssqlExecuteQueryResult<Map<String, dynamic>>> getPercQttSeparationsFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
-    String query = QuerysCronos.selectPercQttSeparations(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, cgc: companyController.company.cnpj);
-    await sqlConnection.tryConnected(companyController.company);
+  Future<MssqlExecuteQueryResult<Map<String, dynamic>>> getPercQttSeparationsFromCronos(
+      {required String typeData, DateTime? dateIni, DateTime? dateEnd, required Map<String, bool> companies}) async {
+    String query = QuerysCronos.selectPercQttSeparations(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, companies: companies);
+    await sqlConnection.tryConnected(connectionController.connection);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
       return MssqlExecuteQueryResult.success(result.first);
@@ -21,9 +22,10 @@ class HomeDataCronosRepository {
     }
   }
 
-  Future<MssqlExecuteQueryResult<List<dynamic>>> getQttBySeparatorFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
-    String query = QuerysCronos.selectQttBySeparator(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, cgc: companyController.company.cnpj);
-    await sqlConnection.tryConnected(companyController.company);
+  Future<MssqlExecuteQueryResult<List<dynamic>>> getQttBySeparatorFromCronos(
+      {required String typeData, DateTime? dateIni, DateTime? dateEnd, required Map<String, bool> companies}) async {
+    String query = QuerysCronos.selectQttBySeparator(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, companies: companies);
+    await sqlConnection.tryConnected(connectionController.connection);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
       return MssqlExecuteQueryResult.success(result);
@@ -32,9 +34,10 @@ class HomeDataCronosRepository {
     }
   }
 
-  Future<MssqlExecuteQueryResult<List<dynamic>>> getQttPerHourFromCronos({required String typeData, DateTime? dateIni, DateTime? dateEnd}) async {
-    String query = QuerysCronos.selectQttPerHour(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, cgc: companyController.company.cnpj);
-    await sqlConnection.tryConnected(companyController.company);
+  Future<MssqlExecuteQueryResult<List<dynamic>>> getQttPerHourFromCronos(
+      {required String typeData, DateTime? dateIni, DateTime? dateEnd, required Map<String, bool> companies}) async {
+    String query = QuerysCronos.selectQttPerHour(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, companies: companies);
+    await sqlConnection.tryConnected(connectionController.connection);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
       return MssqlExecuteQueryResult.success(result);

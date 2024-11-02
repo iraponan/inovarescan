@@ -1,7 +1,7 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inovarescan/src/controllers/company.dart';
+import 'package:inovarescan/src/controllers/connection.dart';
 import 'package:inovarescan/src/helpers/utils/utils.dart';
 import 'package:inovarescan/src/screens/common_widgets/custom_text_field.dart';
 import 'package:inovarescan/src/services/validators.dart';
@@ -57,7 +57,7 @@ class _ValidateCompanyDialogState extends State<ValidateCompanyDialog> {
                   textInputFormatter: CnpjInputFormatter(),
                   textInputType: TextInputType.number,
                 ),
-                GetBuilder<CompanyController>(builder: (controller) {
+                GetBuilder<ConnectionController>(builder: (controller) {
                   return ElevatedButton(
                     onPressed: () async {
                       if (_formFieldKey.currentState!.validate()) {

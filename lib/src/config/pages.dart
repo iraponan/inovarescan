@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:inovarescan/src/bindings/auth.dart';
-import 'package:inovarescan/src/bindings/company.dart';
+import 'package:inovarescan/src/bindings/connection.dart';
 import 'package:inovarescan/src/bindings/filter_data.dart';
 import 'package:inovarescan/src/bindings/home.dart';
 import 'package:inovarescan/src/bindings/internet_connection.dart';
@@ -24,7 +24,7 @@ mixin AppPages {
         InternetConnectionBinding(),
         SqlServerConnectionBinding(),
         AuthBinding(),
-        CompanyBinding(),
+        ConnectionBinding(),
       ],
     ),
     GetPage(
@@ -37,7 +37,7 @@ mixin AppPages {
       bindings: [
         SqlServerConnectionBinding(),
         AuthBinding(),
-        CompanyBinding(),
+        ConnectionBinding(),
         UserCronosBinding(),
       ],
     ),
@@ -48,7 +48,7 @@ mixin AppPages {
       ),
       bindings: [
         SqlServerConnectionBinding(),
-        CompanyBinding(),
+        ConnectionBinding(),
         AuthBinding(),
       ],
     ),
@@ -57,7 +57,7 @@ mixin AppPages {
       page: () => const BaseScreen(),
       bindings: [
         SqlServerConnectionBinding(),
-        CompanyBinding(),
+        ConnectionBinding(),
         SqlServerConnectionBinding(),
         UserCronosBinding(),
         NavigationBinding(),

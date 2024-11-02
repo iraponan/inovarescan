@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:inovarescan/src/helpers/mssql/querys_columns.dart';
 import 'package:inovarescan/src/helpers/utils/utils.dart';
 import 'package:inovarescan/src/repositories/mssql/users.dart';
 import 'package:inovarescan/src/repositories/parse_server/auth.dart';
@@ -40,13 +39,13 @@ class UserCronosController extends GetxController {
     );
   }
 
-  Future<List<String>> getUserAccessCompanies({required String user}) async {
+  Future<List<Map<String, dynamic>>> getUserAccessCompanies({required String user}) async {
     final result = await _usersCronosRepository.getUserAccessCompaniesFromCronos(user: user);
-    List<String> userAccessCompanies = [];
+    List<Map<String, dynamic>> userAccessCompanies = [];
     result.when(
       success: (data) {
         for (var u in data) {
-          userAccessCompanies.add(u[QueryUserAccessCompaniesColumnsNames.idCompany]);
+          userAccessCompanies.add(u);
         }
       },
       error: (message) {
