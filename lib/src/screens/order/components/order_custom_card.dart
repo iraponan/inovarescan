@@ -6,6 +6,7 @@ import 'package:rive_animated_icon/rive_animated_icon.dart';
 class OrderCustomCard extends StatelessWidget {
   const OrderCustomCard({
     super.key,
+    required this.id,
     required this.tipoMov,
     required this.numMov,
     required this.statusSepMov,
@@ -18,6 +19,7 @@ class OrderCustomCard extends StatelessWidget {
     required this.vendor,
   });
 
+  final int id;
   final String tipoMov;
   final String numMov;
   final String statusSepMov;
@@ -32,6 +34,7 @@ class OrderCustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return Container(
       padding: EdgeInsets.only(top: 8, left: 8, right: 8),
       width: size.width,
@@ -109,13 +112,21 @@ class OrderCustomCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  RiveAnimatedIcon(
-                    riveIcon: getRiveIcon(statusSepMov),
-                    width: 50,
-                    height: 50,
-                    color: getStatusColor(statusSepMov),
-                    strokeWidth: 3,
-                    loopAnimation: true,
+                  SizedBox(
+                    child: Hero(
+                      tag: id,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: RiveAnimatedIcon(
+                          riveIcon: getRiveIcon(statusSepMov),
+                          width: 50,
+                          height: 50,
+                          color: getStatusColor(statusSepMov),
+                          strokeWidth: 3,
+                          loopAnimation: true,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

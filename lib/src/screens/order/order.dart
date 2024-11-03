@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inovarescan/src/config/page_routes.dart';
 import 'package:inovarescan/src/controllers/order.dart';
 import 'package:inovarescan/src/helpers/utils/consts.dart';
 import 'package:inovarescan/src/screens/common_widgets/filters_dialog.dart';
@@ -60,17 +61,21 @@ class OrderScreen extends StatelessWidget {
                       orderController.loadMoreOrders();
                     }
                     if (!orderController.isLoading.value) {
-                      return OrderCustomCard(
-                        tipoMov: orderController.orders[index].typeMov,
-                        numMov: orderController.orders[index].numMov,
-                        statusSepMov: orderController.orders[index].statusSepMov,
-                        dateType: VariablesUtils.dateOptions.firstWhere((d) => d == 'Operação'),
-                        dtMov: orderController.orders[index].dateMov,
-                        codClient: orderController.orders[index].codClient,
-                        nameClient: orderController.orders[index].nameClient,
-                        razClient: orderController.orders[index].razClient,
-                        cpfCNPJClient: orderController.orders[index].cpfCNPJClient,
-                        vendor: orderController.orders[index].vendor,
+                      return GestureDetector(
+                        onTap: () => Get.toNamed(PageRoutes.orderItems, arguments: orderController.orders[index]),
+                        child: OrderCustomCard(
+                          id: orderController.orders[index].id,
+                          tipoMov: orderController.orders[index].typeMov,
+                          numMov: orderController.orders[index].numMov,
+                          statusSepMov: orderController.orders[index].statusSepMov,
+                          dateType: VariablesUtils.dateOptions.firstWhere((d) => d == 'Operação'),
+                          dtMov: orderController.orders[index].dateMov,
+                          codClient: orderController.orders[index].codClient,
+                          nameClient: orderController.orders[index].nameClient,
+                          razClient: orderController.orders[index].razClient,
+                          cpfCNPJClient: orderController.orders[index].cpfCNPJClient,
+                          vendor: orderController.orders[index].vendor,
+                        ),
                       );
                     } else {
                       return CardOrderPlaceholder();

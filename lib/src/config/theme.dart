@@ -14,6 +14,7 @@ mixin ThemeProject {
         actionsIconTheme: IconThemeData(
           color: Colors.white,
         ),
+        foregroundColor: Colors.white,
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(color: Colors.white),
       elevatedButtonTheme: ElevatedButtonThemeData(

@@ -12,6 +12,7 @@ import 'package:inovarescan/src/config/page_routes.dart';
 import 'package:inovarescan/src/screens/auth/sign_in.dart';
 import 'package:inovarescan/src/screens/auth/sign_up.dart';
 import 'package:inovarescan/src/screens/base/base.dart';
+import 'package:inovarescan/src/screens/order/components/order_items.dart';
 import 'package:inovarescan/src/screens/splash/connection_error.dart';
 import 'package:inovarescan/src/screens/splash/init.dart';
 
@@ -65,6 +66,10 @@ mixin AppPages {
         HomeBinding(),
         OrderBidding(),
       ],
+    ),
+    GetPage(
+      name: PageRoutes.orderItems,
+      page: () => OrderItems(),
     ),
   ];
 }

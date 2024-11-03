@@ -1,4 +1,5 @@
 mixin PageRoutes {
+  static const String orderItems = '/baseScreen/order/orderItems';
   static const String initRoute = '/initScreen';
   static const String baseRoute = '/baseScreen';
   static const String signInRoute = '/signIn';
