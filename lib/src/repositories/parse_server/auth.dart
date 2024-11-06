@@ -124,12 +124,12 @@ class AuthRepository {
   }
 
   Future<UserProfileResult> validateUserCronosExists(String username) async {
-    final companyController = Get.find<ConnectionController>();
+    final connectionController = Get.find<ConnectionController>();
     final queryBuilder = QueryBuilder(ParseObject(TablesNamesParseServer.user))
       ..whereEqualTo(UserColumnNamesParseServer.userCronos, username)
       ..whereEqualTo(
         UserColumnNamesParseServer.company,
-        ParseObject(TablesNamesParseServer.company)..set(CompanyConnectionColumnNamesParseServer.id, companyController.connection.id),
+        ParseObject(TablesNamesParseServer.company)..set(CompanyConnectionColumnNamesParseServer.id, connectionController.connection.id),
       );
 
     final response = await queryBuilder.query();

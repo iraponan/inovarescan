@@ -10,6 +10,7 @@ class OrderCustomCard extends StatelessWidget {
     required this.tipoMov,
     required this.numMov,
     required this.statusSepMov,
+    required this.dscStatusSepMov,
     required this.dateType,
     required this.dtMov,
     required this.codClient,
@@ -22,6 +23,7 @@ class OrderCustomCard extends StatelessWidget {
   final int id;
   final String tipoMov;
   final String numMov;
+  final String dscStatusSepMov;
   final String statusSepMov;
   final String dateType;
   final DateTime dtMov;
@@ -57,7 +59,7 @@ class OrderCustomCard extends StatelessWidget {
               ),
               Center(
                 child: Text(
-                  statusSepMov,
+                  dscStatusSepMov,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -139,13 +141,13 @@ class OrderCustomCard extends StatelessWidget {
 
   RiveIcon getRiveIcon(String status) {
     switch (status) {
-      case 'Separado':
+      case 'S':
         return RiveIcon.check;
-      case 'Separado c/ Divergência':
+      case 'D':
         return RiveIcon.warning;
-      case 'Finalizado':
+      case 'F':
         return RiveIcon.bin;
-      case 'Em Separação':
+      case 'E':
         return RiveIcon.timer2;
       default:
         return RiveIcon.edit;
@@ -154,13 +156,13 @@ class OrderCustomCard extends StatelessWidget {
 
   Color getStatusColor(String status) {
     switch (status) {
-      case 'Separado':
+      case 'S':
         return Colors.green;
-      case 'Separado c/ Divergência':
+      case 'D':
         return Colors.red;
-      case 'Finalizado':
+      case 'F':
         return Colors.blue;
-      case 'Em Separação':
+      case 'E':
         return Colors.orange;
       default:
         return Colors.deepOrange;

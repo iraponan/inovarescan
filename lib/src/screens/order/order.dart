@@ -68,13 +68,14 @@ class OrderScreen extends StatelessWidget {
                           tipoMov: orderController.orders[index].typeMov,
                           numMov: orderController.orders[index].numMov,
                           statusSepMov: orderController.orders[index].statusSepMov,
+                          dscStatusSepMov: orderController.orders[index].dscStatusSepMov,
                           dateType: VariablesUtils.dateOptions.firstWhere((d) => d == 'Operação'),
                           dtMov: orderController.orders[index].dateMov,
                           codClient: orderController.orders[index].codClient,
-                          nameClient: orderController.orders[index].nameClient,
-                          razClient: orderController.orders[index].razClient,
-                          cpfCNPJClient: orderController.orders[index].cpfCNPJClient,
-                          vendor: orderController.orders[index].vendor,
+                          nameClient: orderController.orders[index].nameClient ?? '',
+                          razClient: orderController.orders[index].razClient ?? '',
+                          cpfCNPJClient: orderController.orders[index].cpfCNPJClient ?? '',
+                          vendor: orderController.orders[index].vendor ?? '',
                         ),
                       );
                     } else {

@@ -6,13 +6,14 @@ import 'package:inovarescan/src/bindings/home.dart';
 import 'package:inovarescan/src/bindings/internet_connection.dart';
 import 'package:inovarescan/src/bindings/navigation.dart';
 import 'package:inovarescan/src/bindings/order.dart';
+import 'package:inovarescan/src/bindings/order_items.dart';
 import 'package:inovarescan/src/bindings/sql_server_connection.dart';
 import 'package:inovarescan/src/bindings/user_cronos.dart';
 import 'package:inovarescan/src/config/page_routes.dart';
 import 'package:inovarescan/src/screens/auth/sign_in.dart';
 import 'package:inovarescan/src/screens/auth/sign_up.dart';
 import 'package:inovarescan/src/screens/base/base.dart';
-import 'package:inovarescan/src/screens/order/components/order_items.dart';
+import 'package:inovarescan/src/screens/order/order_items/order_items.dart';
 import 'package:inovarescan/src/screens/splash/connection_error.dart';
 import 'package:inovarescan/src/screens/splash/init.dart';
 
@@ -70,6 +71,9 @@ mixin AppPages {
     GetPage(
       name: PageRoutes.orderItems,
       page: () => OrderItems(),
+      bindings: [
+        OrderItemsBinding(),
+      ],
     ),
   ];
 }

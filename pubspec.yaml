@@ -59,7 +59,6 @@ dependencies:
   rive_animated_icon: ^2.0.1
   shimmer: ^3.0.0
   json_annotation: ^4.9.0
-  flutter_expandable_fab: ^2.3.0
   cached_network_image: ^3.3.1
 
 dev_dependencies:

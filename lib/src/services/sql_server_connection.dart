@@ -8,15 +8,15 @@ class SqlServerConnection extends GetxService {
 
   bool get isConnected => mssqlConnection.isConnected;
 
-  Future<void> tryConnected(Connection company) async {
-    if (company.id.isNotEmpty) {
+  Future<void> tryConnected(Connection connection) async {
+    if (connection.id.isNotEmpty) {
       try {
         await mssqlConnection.connect(
-          ip: company.server,
-          port: company.port,
-          databaseName: company.dataBase,
-          username: company.username,
-          password: company.password,
+          ip: connection.server,
+          port: connection.port,
+          databaseName: connection.dataBase,
+          username: connection.username,
+          password: connection.password,
         );
       } catch (e) {
         Utils.showToast(message: e.toString(), isError: true);

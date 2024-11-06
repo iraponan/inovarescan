@@ -8,12 +8,12 @@ import 'package:inovarescan/src/services/sql_server_connection.dart';
 
 class OrderRepository {
   SqlServerConnection sqlConnection = Get.find<SqlServerConnection>();
-  final companyController = Get.find<ConnectionController>();
+  final connectionController = Get.find<ConnectionController>();
 
   Future<MssqlExecuteQueryResult<List<dynamic>>> getOrders(
       {required String typeData, DateTime? dateIni, DateTime? dateEnd, required int page, required int itemsPerPage, required Map<String, bool> companies}) async {
-    String query = QuerysCronos.selectPedidos(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, page: page, itemsPerPage: itemsPerPage, companies: companies);
-    await sqlConnection.tryConnected(companyController.connection);
+    String query = QuerysCronos.selectOrders(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, page: page, itemsPerPage: itemsPerPage, companies: companies);
+    await sqlConnection.tryConnected(connectionController.connection);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
       return MssqlExecuteQueryResult.success(result);

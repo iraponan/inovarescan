@@ -15,7 +15,7 @@ class HomeController extends GetxController {
 
   final filterDataController = Get.find<FilterDataController>();
 
-  final companyController = Get.find<ConnectionController>();
+  final connectionController = Get.find<ConnectionController>();
   final authController = Get.find<AuthController>();
   final userCronosController = Get.find<UserCronosController>();
 
@@ -24,7 +24,7 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    await companyController.getCompanyFromUser(authController.user);
+    await connectionController.getCompanyFromUser(authController.user);
     authController.user.accessCompanies = await userCronosController.getUserAccessCompanies(user: authController.user.userCronos);
     filterDataController.setCompaniesOptions(companies: authController.user.accessCompanies ?? []);
     refreshData();

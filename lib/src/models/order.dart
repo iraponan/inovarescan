@@ -11,32 +11,35 @@ class Order {
   String typeMov;
   @JsonKey(name: QueryOrdersColumnsNames.statusSepMov)
   String statusSepMov;
+  @JsonKey(name: QueryOrdersColumnsNames.dscStatusSepMov)
+  String dscStatusSepMov;
   @JsonKey(name: QueryOrdersColumnsNames.numMov)
   String numMov;
   @JsonKey(name: QueryOrdersColumnsNames.codClient)
   String codClient;
   @JsonKey(name: QueryOrdersColumnsNames.nameClient)
-  String nameClient;
+  String? nameClient;
   @JsonKey(name: QueryOrdersColumnsNames.razClient)
-  String razClient;
+  String? razClient;
   @JsonKey(name: QueryOrdersColumnsNames.cpfCNPJClient)
-  String cpfCNPJClient;
+  String? cpfCNPJClient;
   @JsonKey(name: QueryOrdersColumnsNames.dateMov)
   DateTime dateMov;
   @JsonKey(name: QueryOrdersColumnsNames.vendor)
-  String vendor;
+  String? vendor;
 
   Order({
     required this.id,
     required this.typeMov,
     required this.statusSepMov,
+    required this.dscStatusSepMov,
     required this.numMov,
     required this.codClient,
-    required this.nameClient,
-    required this.razClient,
-    required this.cpfCNPJClient,
+    this.nameClient,
+    this.razClient,
+    this.cpfCNPJClient,
     required this.dateMov,
-    required this.vendor,
+    this.vendor,
   });
 
   @override

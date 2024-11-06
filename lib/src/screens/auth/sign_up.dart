@@ -86,17 +86,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Form(
                           key: formKey,
                           child: Obx(() {
-                            final companyController = Get.find<ConnectionController>();
+                            final connectionController = Get.find<ConnectionController>();
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 CustomTextField(
                                   labelText: 'Empresa',
                                   prefixIcon: Icons.contacts_outlined,
-                                  initialValue: companyController.connection.name,
+                                  initialValue: connectionController.connection.name,
                                   isReadOnly: true,
                                   onSaved: (value) {
-                                    authController.user.connection = companyController.connection;
+                                    authController.user.connection = connectionController.connection;
                                   },
                                 ),
                                 CustomTextField(
