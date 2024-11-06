@@ -11,6 +11,7 @@ class OrderItemsController extends GetxController {
 
   void getOrderItems({required int idMov}) async {
     isLoading.value = true;
+    await createFunctionToBase64();
     final result = await orderItemsRepository.getOrdersItems(idMov: idMov);
     result.when(
       success: (items) {
@@ -24,5 +25,16 @@ class OrderItemsController extends GetxController {
     );
     await orderItemsRepository.disconnectMssql();
     isLoading.value = false;
+  }
+
+  Future<void> createFunctionToBase64() async {
+    final result = await orderItemsRepository.createFunctionToBase64();
+    result.when(
+      success: (items) {},
+      error: (message) {
+        Utils.showToast(message: message, isError: true);
+      },
+    );
+    await orderItemsRepository.disconnectMssql();
   }
 }

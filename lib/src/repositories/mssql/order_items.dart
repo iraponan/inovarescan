@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:inovarescan/src/controllers/connection.dart';
@@ -15,6 +16,18 @@ class OrderItemsRepository {
     await sqlConnection.tryConnected(connectionController.connection);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
+      return MssqlExecuteQueryResult.success(result);
+    } else {
+      return MssqlExecuteQueryResult.error('Não foi possível conectar ao servidor do Cronos por favor tente novamente.');
+    }
+  }
+
+  Future<MssqlExecuteQueryResult<dynamic>> createFunctionToBase64() async {
+    String query = QuerysCronos.selectCreateFunctionToBase64();
+    await sqlConnection.tryConnected(connectionController.connection);
+    if (sqlConnection.isConnected) {
+      log(query);
+      final result = jsonDecode(await sqlConnection.mssqlConnection.writeData(query));
       return MssqlExecuteQueryResult.success(result);
     } else {
       return MssqlExecuteQueryResult.error('Não foi possível conectar ao servidor do Cronos por favor tente novamente.');

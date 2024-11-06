@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:inovarescan/src/config/custom_colors.dart';
 import 'package:inovarescan/src/controllers/order_items.dart';
 import 'package:inovarescan/src/models/order.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rive_animated_icon/rive_animated_icon.dart';
 
 class OrderItems extends StatefulWidget {
@@ -53,9 +54,20 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
         centerTitle: true,
       ),
       body: Obx(() {
-        //log(orderItemsController.ordersItems.first.image!.toString());
-        if (orderItemsController.ordersItems.isEmpty) {
-          return Center(child: Text('Nenhum item encontrado.'));
+        if (orderItemsController.isLoading.value) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(160.0),
+              child: LoadingIndicator(
+                indicatorType: Indicator.ballTrianglePathColoredFilled,
+                colors: [
+                  CustomColors.customSwathColor,
+                  CustomColors.customContrastColor,
+                  CustomColors.customContrastColor2,
+                ],
+              ),
+            ),
+          );
         }
         return Stack(
           children: [
@@ -64,7 +76,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
-                  children: orderItemsController.ordersItems.map((i) {
+                  children: orderItemsController.ordersItems.map((item) {
                     return Column(
                       children: [
                         Row(
@@ -73,8 +85,8 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                             SizedBox(
                               width: 100,
                               height: 100,
-                              child: i.image != null
-                                  ? Image.memory(i.image!)
+                              child: item.image != null
+                                  ? Image.memory(item.image!)
                                   : CachedNetworkImage(
                                       imageUrl: dotenv.env['IMAGE_EMPTY'] ?? '',
                                       placeholder: (context, url) => CircularProgressIndicator(
@@ -96,7 +108,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                                       Text('Código: '),
                                       Expanded(
                                         child: Text(
-                                          i.productCod,
+                                          item.productCod,
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -109,7 +121,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                                       Text('Referência: '),
                                       Expanded(
                                         child: Text(
-                                          i.productReference,
+                                          item.productReference,
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -122,7 +134,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                                       Text('Nome: '),
                                       Expanded(
                                         child: Text(
-                                          i.productName,
+                                          item.productName,
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -135,7 +147,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                                       Text('Fabricante: '),
                                       Expanded(
                                         child: Text(
-                                          i.productManufacturer,
+                                          item.productManufacturer,
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -148,7 +160,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                                       Text('Grupo: '),
                                       Expanded(
                                         child: Text(
-                                          i.productGroup,
+                                          item.productGroup,
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -157,13 +169,13 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                                     ],
                                   ),
                                   Visibility(
-                                    visible: i.productStorageLocation.isNotEmpty,
+                                    visible: item.productStorageLocation.isNotEmpty,
                                     child: Row(
                                       children: [
                                         Text('Local: '),
                                         Expanded(
                                           child: Text(
-                                            i.productStorageLocation,
+                                            item.productStorageLocation,
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -184,7 +196,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                                 children: [
                                   Text('Unid. Padrão'),
                                   Text(
-                                    i.productStandardUnit,
+                                    item.productStandardUnit,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -201,7 +213,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                                 children: [
                                   Text('Unid. da Venda'),
                                   Text(
-                                    i.salesUnit,
+                                    item.salesUnit,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -214,15 +226,15 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                               ),
                             ),
                             Visibility(
-                              visible: i.conversionFactor != 1.0,
+                              visible: item.conversionFactor != 1.0,
                               child: Expanded(
                                 child: Column(
                                   children: [
                                     Text('Fator'),
                                     Text(
-                                      i.conversionFactor < 1.0
-                                          ? '1.0 ${i.salesUnit} / ${1 / i.conversionFactor} ${i.productStandardUnit}'
-                                          : '1.0 ${i.productStandardUnit} / ${i.conversionFactor} ${i.salesUnit}',
+                                      item.conversionFactor < 1.0
+                                          ? '1.0 ${item.salesUnit} / ${1 / item.conversionFactor} ${item.productStandardUnit}'
+                                          : '1.0 ${item.productStandardUnit} / ${item.conversionFactor} ${item.salesUnit}',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -240,7 +252,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                                 children: [
                                   Text('Estoque'),
                                   Text(
-                                    '${i.currentBalance}',
+                                    '${item.currentBalance}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -261,7 +273,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                                 children: [
                                   Text('Qtd. Solicitada'),
                                   Text(
-                                    '${i.qttRequested}',
+                                    '${item.qttRequested}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -274,7 +286,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                                 children: [
                                   Text('Qtd. Faturada'),
                                   Text(
-                                    '${i.qttInvoiced}',
+                                    '${item.qttInvoiced}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -287,7 +299,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                                 children: [
                                   Text('Qtd. Separada'),
                                   Text(
-                                    '${i.qttSeparate}',
+                                    '${item.qttSeparate}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -301,7 +313,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Visibility(
-                              visible: i.hasAGrid,
+                              visible: item.hasAGrid,
                               child: Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -320,7 +332,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                               ),
                             ),
                             Visibility(
-                              visible: i.hasASerialNumber,
+                              visible: item.hasASerialNumber,
                               child: Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -336,7 +348,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                               ),
                             ),
                             Visibility(
-                              visible: i.hasABatchNumber,
+                              visible: item.hasABatchNumber,
                               child: Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -361,7 +373,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
               ),
             ),
             Visibility(
-              visible: false, //order.statusSepMov == 'F',
+              visible: order.statusSepMov == 'F',
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -391,7 +403,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
               ),
             ),
             Visibility(
-              visible: false, //order.statusSepMov == 'F',
+              visible: order.statusSepMov == 'E',
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -404,7 +416,9 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                     children: [
                       ElevatedButton(
                         onPressed: () {},
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.orange.shade900),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange.shade900,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -424,7 +438,9 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                       ),
                       ElevatedButton(
                         onPressed: () {},
-                        style: ElevatedButton.styleFrom(backgroundColor: CustomColors.customContrastColor2),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: CustomColors.customContrastColor2,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -443,6 +459,39 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: order.statusSepMov == 'D' || order.statusSepMov == 'S',
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: double.infinity,
+                  color: Colors.white,
+                  padding: EdgeInsets.all(16),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent.shade700,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.cancel_outlined),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Text(
+                          'Desfazer Separação',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
