@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: LoadingOverlay(
           isLoading: homeController.isLoading.value,
-          color: CustomColors.customSwathColor.withOpacity(0.5),
+          color: CustomColors.customSwathColor.withValues(alpha: 0.5),
           progressIndicator: Padding(
             padding: const EdgeInsets.all(160.0),
             child: LoadingIndicator(

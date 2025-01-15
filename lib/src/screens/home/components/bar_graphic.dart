@@ -78,8 +78,19 @@ class BarGraphic extends StatelessWidget {
                 reservedSize: 120,
                 getTitlesWidget: (value, meta) {
                   return SideTitleWidget(
-                    axisSide: meta.axisSide,
+                    //axisSide: meta.axisSide,
                     space: 8,
+                    meta: TitleMeta(
+                      min: meta.min,
+                      max: meta.max,
+                      parentAxisSize: meta.parentAxisSize,
+                      axisPosition: meta.axisPosition,
+                      appliedInterval: meta.appliedInterval,
+                      sideTitles: meta.sideTitles,
+                      formattedValue: meta.formattedValue,
+                      axisSide: meta.axisSide,
+                      rotationQuarterTurns: meta.rotationQuarterTurns,
+                    ),
                     child: RotatedBox(
                       quarterTurns: 1,
                       child: Text(

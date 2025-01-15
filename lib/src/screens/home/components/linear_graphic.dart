@@ -38,7 +38,7 @@ class LinearGraphic extends StatelessWidget {
               isStrokeJoinRound: true,
               belowBarData: BarAreaData(
                 show: true,
-                color: CustomColors.customContrastColor2.withOpacity(0.3),
+                color: CustomColors.customContrastColor2.withValues(alpha: 0.3),
               ),
               dotData: FlDotData(
                 show: true,
