@@ -73,15 +73,45 @@ class _FiltersDialogState extends State<FiltersDialog> {
                         return CheckboxListTile(
                           title: Text(option[QueryUserAccessCompaniesColumnsNames.nameCompany]),
                           activeColor: CustomColors.customSwathColor,
-                          value: filterDataController.selectedOptions[option[QueryUserAccessCompaniesColumnsNames.idCompany]],
+                          value: filterDataController.companyOptions[option[QueryUserAccessCompaniesColumnsNames.idCompany]],
                           onChanged: (bool? newValue) {
-                            filterDataController.selectedOptions[option[QueryUserAccessCompaniesColumnsNames.idCompany]] = newValue!;
+                            filterDataController.companyOptions[option[QueryUserAccessCompaniesColumnsNames.idCompany]] = newValue!;
                           },
                         );
                       }).toList() ??
                       [],
                 );
               }),
+              Visibility(
+                visible: widget.isOrder,
+                child: Obx(() {
+                  return ExpansionTile(
+                    shape: RoundedRectangleBorder(),
+                    expansionAnimationStyle: AnimationStyle(
+                      curve: Curves.fastEaseInToSlowEaseOut,
+                      duration: Duration(seconds: 1),
+                    ),
+                    title: Text(
+                      'Status',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    children: filterDataController.statusMov.entries.map((entry) {
+                      return CheckboxListTile(
+                        title: Text(entry.key.isNotEmpty ? entry.key.first : 'Sem título'),
+                        value: entry.value,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            filterDataController.statusMov[entry.key] = value!;
+                          });
+                        },
+                      );
+                    }).toList(),
+                  );
+                }),
+              ),
               Text(
                 'Tipo de Datas',
                 style: TextStyle(

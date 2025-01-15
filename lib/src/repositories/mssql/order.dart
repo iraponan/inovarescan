@@ -10,9 +10,24 @@ class OrderRepository {
   SqlServerConnection sqlConnection = Get.find<SqlServerConnection>();
   final connectionController = Get.find<ConnectionController>();
 
-  Future<MssqlExecuteQueryResult<List<dynamic>>> getOrders(
-      {required String typeData, DateTime? dateIni, DateTime? dateEnd, required int page, required int itemsPerPage, required Map<String, bool> companies}) async {
-    String query = QuerysCronos.selectOrders(typeData: typeData, dateIni: dateIni, dateEnd: dateEnd, page: page, itemsPerPage: itemsPerPage, companies: companies);
+  Future<MssqlExecuteQueryResult<List<dynamic>>> getOrders({
+    required String typeData,
+    DateTime? dateIni,
+    DateTime? dateEnd,
+    required int page,
+    required int itemsPerPage,
+    required Map<String, bool> companies,
+    required Map<List<String>, bool> statusMov,
+  }) async {
+    String query = QuerysCronos.selectOrders(
+      typeData: typeData,
+      dateIni: dateIni,
+      dateEnd: dateEnd,
+      page: page,
+      itemsPerPage: itemsPerPage,
+      companies: companies,
+      statusMov: statusMov,
+    );
     await sqlConnection.tryConnected(connectionController.connection);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));

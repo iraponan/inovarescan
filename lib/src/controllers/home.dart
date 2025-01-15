@@ -35,7 +35,7 @@ class HomeController extends GetxController {
       typeData: filterDataController.typeData.value,
       dateIni: filterDataController.dateIni.value,
       dateEnd: filterDataController.dateEnd.value,
-      companies: filterDataController.selectedOptions,
+      companies: filterDataController.companyOptions,
     );
     result.when(
       success: (data) {
@@ -52,7 +52,7 @@ class HomeController extends GetxController {
       typeData: filterDataController.typeData.value,
       dateIni: filterDataController.dateIni.value,
       dateEnd: filterDataController.dateEnd.value,
-      companies: filterDataController.selectedOptions,
+      companies: filterDataController.companyOptions,
     );
     result.when(
       success: (data) {
@@ -69,7 +69,7 @@ class HomeController extends GetxController {
       typeData: filterDataController.typeData.value,
       dateIni: filterDataController.dateIni.value,
       dateEnd: filterDataController.dateEnd.value,
-      companies: filterDataController.selectedOptions,
+      companies: filterDataController.companyOptions,
     );
     result.when(
       success: (data) {
