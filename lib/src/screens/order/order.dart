@@ -67,7 +67,7 @@ class OrderScreen extends StatelessWidget {
                           id: orderController.orders[index].id,
                           tipoMov: orderController.orders[index].typeMov,
                           numMov: orderController.orders[index].numMov,
-                          statusSepMov: orderController.orders[index].statusSepMov,
+                          statusSepMov: orderController.orders[index].statusSepOrder,
                           dscStatusSepMov: orderController.orders[index].dscStatusSepMov,
                           dateType: VariablesUtils.dateOptions.firstWhere((d) => d == 'Operação'),
                           dtMov: orderController.orders[index].dateMov,

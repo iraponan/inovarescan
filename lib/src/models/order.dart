@@ -10,7 +10,7 @@ class Order {
   @JsonKey(name: QueryOrdersColumnsNames.typeMov)
   String typeMov;
   @JsonKey(name: QueryOrdersColumnsNames.statusSepMov)
-  String statusSepMov;
+  String statusSepOrder;
   @JsonKey(name: QueryOrdersColumnsNames.dscStatusSepMov)
   String dscStatusSepMov;
   @JsonKey(name: QueryOrdersColumnsNames.numMov)
@@ -31,7 +31,7 @@ class Order {
   Order({
     required this.id,
     required this.typeMov,
-    required this.statusSepMov,
+    required this.statusSepOrder,
     required this.dscStatusSepMov,
     required this.numMov,
     required this.codClient,
@@ -44,7 +44,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order{id: $id, typeMov: $typeMov, statusSepMov: $statusSepMov, numMov: $numMov, codClient: $codClient, nameClient: $nameClient, razClient: $razClient, cpfCNPJClient: $cpfCNPJClient, dateMov: $dateMov, vendor: $vendor}';
+    return 'Order{id: $id, typeMov: $typeMov, statusSepMov: $statusSepOrder, numMov: $numMov, codClient: $codClient, nameClient: $nameClient, razClient: $razClient, cpfCNPJClient: $cpfCNPJClient, dateMov: $dateMov, vendor: $vendor}';
   }
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);

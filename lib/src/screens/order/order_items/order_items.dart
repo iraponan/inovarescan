@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:inovarescan/src/config/custom_colors.dart';
+import 'package:inovarescan/src/controllers/order.dart';
 import 'package:inovarescan/src/controllers/order_items.dart';
 import 'package:inovarescan/src/models/order.dart';
+import 'package:inovarescan/src/screens/order/order_items/components/update_status_dialog.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rive_animated_icon/rive_animated_icon.dart';
 
@@ -17,6 +19,7 @@ class OrderItems extends StatefulWidget {
 
 class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateMixin {
   final Order order = Get.arguments;
+  final orderController = Get.find<OrderController>();
   final orderItemsController = Get.find<OrderItemsController>();
 
   @override
@@ -39,7 +42,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                 child: Material(
                   color: Colors.transparent,
                   child: RiveAnimatedIcon(
-                    riveIcon: getRiveIcon(order.statusSepMov),
+                    riveIcon: getRiveIcon(order.statusSepOrder),
                     width: 50,
                     height: 50,
                     color: Colors.white,
@@ -48,7 +51,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
         centerTitle: true,
@@ -373,7 +376,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
               ),
             ),
             Visibility(
-              visible: order.statusSepMov == 'F',
+              visible: order.statusSepOrder == 'F',
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -381,11 +384,25 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                   color: Colors.white,
                   padding: EdgeInsets.all(16),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      final bool? result = await showDialog(
+                        context: context,
+                        builder: (context) => UpdateStatusDialog(text: 'Colocar Movimento em Separação?'),
+                      );
+                      if (result ?? false) {
+                        setState(() {
+                          order.statusSepOrder = 'E';
+                          orderController.updateStatusSepOrder(order: order);
+                        });
+                      }
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.barcode_reader),
+                        Icon(
+                          Icons.barcode_reader,
+                          color: Colors.white,
+                        ),
                         SizedBox(
                           width: 16,
                         ),
@@ -403,7 +420,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
               ),
             ),
             Visibility(
-              visible: order.statusSepMov == 'E',
+              visible: order.statusSepOrder == 'E',
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -415,14 +432,64 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          final bool? result = await showDialog(
+                            context: context,
+                            builder: (context) => UpdateStatusDialog(text: 'Cancelar Separação?'),
+                          );
+                          if (result ?? false) {
+                            setState(() {
+                              order.statusSepOrder = 'F';
+                              orderController.updateStatusSepOrder(order: order);
+                            });
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange.shade900,
+                          backgroundColor: Colors.red.shade900,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.barcode_reader),
+                            Icon(
+                              Icons.cancel_outlined,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 16,
+                            ),
+                            Text(
+                              'Cancelar Separação',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final bool? result = await showDialog(
+                            context: context,
+                            builder: (context) => UpdateStatusDialog(text: 'Separar com divergência?'),
+                          );
+                          if (result ?? false) {
+                            setState(() {
+                              order.statusSepOrder = 'D';
+                              orderController.updateStatusSepOrder(order: order);
+                            });
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.yellow.shade900,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.warning_amber_rounded,
+                              color: Colors.white,
+                            ),
                             SizedBox(
                               width: 16,
                             ),
@@ -437,14 +504,28 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          final bool? result = await showDialog(
+                            context: context,
+                            builder: (context) => UpdateStatusDialog(text: 'Finalizar Separação?'),
+                          );
+                          if (result ?? false) {
+                            setState(() {
+                              order.statusSepOrder = 'S';
+                              orderController.updateStatusSepOrder(order: order);
+                            });
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: CustomColors.customContrastColor2,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.check_circle),
+                            Icon(
+                              Icons.check_circle,
+                              color: Colors.white,
+                            ),
                             SizedBox(
                               width: 16,
                             ),
@@ -464,7 +545,7 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
               ),
             ),
             Visibility(
-              visible: order.statusSepMov == 'D' || order.statusSepMov == 'S',
+              visible: order.statusSepOrder == 'D' || order.statusSepOrder == 'S',
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -472,14 +553,22 @@ class _OrderItemsState extends State<OrderItems> with SingleTickerProviderStateM
                   color: Colors.white,
                   padding: EdgeInsets.all(16),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        order.statusSepOrder = 'F';
+                        orderController.updateStatusSepOrder(order: order);
+                      });
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.redAccent.shade700,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.cancel_outlined),
+                        Icon(
+                          Icons.cancel_outlined,
+                          color: Colors.white,
+                        ),
                         SizedBox(
                           width: 16,
                         ),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:inovarescan/src/controllers/connection.dart';
 import 'package:inovarescan/src/helpers/mssql/querys.dart';
+import 'package:inovarescan/src/models/order.dart';
 import 'package:inovarescan/src/results/mssql_execute_query.dart';
 import 'package:inovarescan/src/services/sql_server_connection.dart';
 
@@ -31,6 +32,17 @@ class OrderRepository {
     await sqlConnection.tryConnected(connectionController.connection);
     if (sqlConnection.isConnected) {
       List<dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.getData(query));
+      return MssqlExecuteQueryResult.success(result);
+    } else {
+      return MssqlExecuteQueryResult.error('Não foi possível conectar ao servidor do Cronos por favor tente novamente.');
+    }
+  }
+
+  Future<MssqlExecuteQueryResult<Map<String, dynamic>>> updateStatusSepOrder({required Order order}) async {
+    String query = QuerysCronos.updateStatusSeparacao(idMov: order.id, status: order.statusSepOrder);
+    await sqlConnection.tryConnected(connectionController.connection);
+    if (sqlConnection.isConnected) {
+      Map<String, dynamic> result = jsonDecode(await sqlConnection.mssqlConnection.writeData(query));
       return MssqlExecuteQueryResult.success(result);
     } else {
       return MssqlExecuteQueryResult.error('Não foi possível conectar ao servidor do Cronos por favor tente novamente.');

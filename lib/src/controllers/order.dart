@@ -48,6 +48,17 @@ class OrderController extends GetxController {
     );
   }
 
+  Future<void> updateStatusSepOrder({required Order order}) async {
+    final result = await _orderRepository.updateStatusSepOrder(order: order);
+    result.when(
+      success: (data) {
+        Utils.showToast(message: '${data.values.first} Movimento Alterado!', isInfo: true);
+      },
+      error: (message) => Utils.showToast(message: message, isError: true),
+    );
+    update();
+  }
+
   void loadMoreOrders() async {
     page++;
     isLoading.value = true;
